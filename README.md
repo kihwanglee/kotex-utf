@@ -7,7 +7,7 @@ Introduction
 kotex-utf is a macro package for typesetting Hangul, the native 
 alphabet of the Korean language.  kotex-utf belongs to ko.TeX, 
 a comprehensive Korean typesetting system together with packages kotex-oblivoir, 
-cjk-ko, XeTeX-ko, LuaTeX-ko, and kotex-utils.
+kotex-plain, cjk-ko, XeTeX-ko, LuaTeX-ko, and kotex-utils.
 
 Usage
 -----
