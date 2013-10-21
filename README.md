@@ -77,7 +77,7 @@ For more information, please refer to the included documentation (written in Kor
 License
 -------
 
-kotex-oblivoir is licensed under the LaTeX Project Public
+kotex-utf is licensed under the LaTeX Project Public
 License (LPPL).
 
 Contacts
