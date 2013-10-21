@@ -1,0 +1,126 @@
+%% File `dhucs-trivcj.sty`
+%%
+%% Copyright (c) 2007-2013 Dohyun Kim <nomos at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+%% -----------------------------------------------------------------
+%% \trivcjtypesetting for temporary chinese or japanese insertion
+\ProvidesPackage{dhucs-trivcj}
+  [2011/08/17 temporary chinese/japanese for dhucs]
+
+%%%%%% luatex & xetex
+\ifx가가\relax
+  \newcommand*\trivcjtypesetting{%
+    \parindent1em
+    \let\nbs\nobreakspace %% see CJK.sty
+    \def~{}}
+  \protected\edef\japanese{\unexpanded\expandafter{\japanese\trivcjtypesetting}}
+  \protected\edef\Schinese{\unexpanded\expandafter{\Schinese\trivcjtypesetting}}
+  \protected\edef\Tchinese{\unexpanded\expandafter{\Tchinese\trivcjtypesetting}}
+  \let\chinese\Schinese
+  \expandafter\endinput
+\fi
+
+%%%%% legacy tex
+\newskip\interCJskip
+\interCJskip=0em plus 0.1em minus 0.01em
+\newskip\interXCJskip
+\interXCJskip=.25em plus .15em minus .06em
+
+\newcommand*\trivcjtypesetting{%
+  \parindent1em
+  \let\nbs\nobreakspace                  %% see CJK.sty
+  \def~{\hskip\interXCJskip\ignorespaces}%% see CJK.sty
+  \edef\declarenobreakspacefactor{\unexpanded\expandafter
+    {\declarenobreakspacefactor\ignorespaces}}%
+  \edef\declarehanjaspacefactor{\unexpanded\expandafter
+    {\declarehanjaspacefactor\ignorespaces}}%
+  \def\check@next@to@sptoken@@{%
+    \ifx\par\dhucs@nextnext
+      \chardef\puncnobre@k\@ne
+    \else
+      %% if \dhucs@nextnext == \fi ???
+      \ifx\bgroup\dhucs@nextnext\else
+      \ifx\egroup\dhucs@nextnext\else
+      % \ifx&\dhucs@nextnext\else
+      \if\noexpand\dhucs@nextnext\relax\else
+        \chardef\nexttoh@ngul\@ne
+        \let\dhucs@next\relax
+      \fi\fi\fi %\fi
+    \fi
+    \unihangulchar@@@\dhucs@next}%
+  \def\kernbeforeasciichar{\hskip\interXCJskip}%
+  \def\breakbetweenhanja{\hskip\interCJskip}%
+  \def\nobreakbetweenhanja{\nobreak\hskip\interCJskip}%
+  \def\breakafterasciichar{\hskip\interXCJskip}%
+  \def\nobreakafterasciichar{\nobreak\hskip\interXCJskip}%
+  \let\breakafterinlinemath\breakafterasciichar
+  \let\nobreakafterinlinemath\nobreakafterasciichar
+  \let\breakbeforeasciichar\breakafterasciichar
+  \def\cjksymbolextraspace{\hskip.5em minus.5em\relax}%
+  \def\postcjksymskip{\futurelet\dhucs@next\@@postcjksymskip}%
+  \def\cjksymbolunskip{\ifhmode\unskip\fi}%
+  \def\cjksymbolskip{\cjksymbolunskip\cjksymbolextraspace}
+  \expandafter\let\csname nexttohangul-1\expandafter
+    \endcsname\csname nexttotrivcj-1\endcsname
+}
+\newcommand*\@@postcjksymskip{%
+  \ifx\dhucs@next.\else
+  \ifx\dhucs@next,\else
+  \ifx\dhucs@next:\else
+  \ifx\dhucs@next;\else
+  \ifx\dhucs@next!\else
+  \ifx\dhucs@next?\else
+    \cjksymbolextraspace
+  \fi\fi\fi\fi\fi \fi
+  \ifhmode\declarehanjaspacefactor\fi
+  \ignorespaces
+}
+
+\DeclareUnicodeCharacter{30FB}%
+  {\cjksymbolunskip\nobreak\hskip.25em minus.25em
+    \hbox to .5em{\hss\unihangulchar{"30FB}\hss}\hskip.25em minus.25em\relax}
+\DeclareUnicodeCharacter{FF01}% ！
+  {\cjksymbolunskip\hbox to.1em{\unihangulchar{"FF01}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF0C}% ，
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"FF0C}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF0E}% ．
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"FF0E}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF1A}% ：
+  {\cjksymbolunskip\nobreak\hskip.25em minus.25em
+    \hbox to.5em{\hss\unihangulchar{"FF1A}\hss}\hskip.25em minus.25em\relax}
+\DeclareUnicodeCharacter{FF1B}% ；
+  {\cjksymbolunskip\nobreak\hskip.25em minus.25em
+    \hbox to.5em{\hss\unihangulchar{"FF1B}\hss}\hskip.25em minus.25em\relax}
+\DeclareUnicodeCharacter{FF1F}% ？
+  {\cjksymbolunskip\hbox to.1em{\unihangulchar{"FF1F}\hss}\postcjksymskip}
+
+%\newenvironment{japanese}{\SetHanjaFonts{jpmj}{jpgt}{jpgt}\trivcjtypesetting}{}
+%\newenvironment{chinese}{\SetHanjaFonts{cnmj}{cngt}{cngt}\trivcjtypesetting}{}
+% AR PL SungtiL GB
+\DeclareFontFamily{LUC}{gbsn}{\hyphenchar\font\m@ne}
+\DeclareFontShape{LUC}{gbsn}{m}{n}{<-> LUC * gbsnu}{}
+%% AR PL Mingti2L Big5
+\DeclareFontFamily{LUC}{bsmi}{\hyphenchar\font\m@ne}
+\DeclareFontShape{LUC}{bsmi}{m}{n}{<-> LUC * bsmiu}{}
+%% Japanese Wadalab
+\DeclareFontFamily{LUC}{min}{\hyphenchar\font\m@ne}
+\DeclareFontShape{LUC}{min}{m}{n}{ <-> LUC * udmj}{}
+%%
+\newenvironment{japanese}
+{\SetHanjaFonts{min}{min}{min}\trivcjtypesetting}{}
+\newenvironment{Schinese}
+{\SetHanjaFonts{gbsn}{gbsn}{gbsn}\trivcjtypesetting}{}
+\newenvironment{Tchinese}
+{\SetHanjaFonts{bsmi}{bsmi}{bsmi}\trivcjtypesetting}{}
+
+\let\chinese\Schinese\let\endchinese\endSchinese
+
+\endinput

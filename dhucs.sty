@@ -1,0 +1,127 @@
+%% File `dhucs.sty`
+%%
+%% (C) Copyright 2007-2013 Dohyun Kim  <nomos at ktug org>
+%%                         Kangsoo Kim <karnes at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+%% --------------------------------------------------------
+%%
+%% changelog:
+%% 2009/03/05  5.0.0   wrapper for various engines
+%% 2008/08/28  4.1.4   work around error under using babel package
+%% 2008/05/26  4.1.3   fallback of hangul font family is now serif font
+%% 2008/03/15  4.1.2   redefine hyphendemerits only under finemath
+%% 2008/01/30  4.1.1   fix a bug of heading mark
+%% 2008/01/29  4.1.0   write raw chars in aux, toc, idx ...
+%% 2007/12/28  4.0.14  compatible with footmisc.sty (reported by 서상현)
+%% 2007/12/01  4.0.13  spacefactor=1000 between hangul and `)'
+%% 2007/10/30  4.0.12  fix on \dhucs@next == \ifx
+%% 2007/10/29  4.0.11  nobreak after \nobreak in \cjksymbolskip
+%% 2007/10/25  4.0.10  simplify code related to \dhucs@next
+%% 2007/10/07  4.0.9   bug fix related to \dhucs@next == \fi
+%% 2007/07/18  4.0.8   part of ko.TeX
+%%                     PUA is now hangul class 2 (= hanja)
+%% 2007/06/30  4.0.7   skip instead of kern after cjksymbol
+%% 2007/06/26  4.0.6   option strictcharcheck introduced
+%% 2007/06/26  4.0.5   redefine U+2018, U+2019, U+201C, U+201D
+%% 2007/06/25  4.0.4   fix bugs introduced by previous minor upgrade
+%% 2007/06/22  4.0.3   lowering multiple punctuations
+%% 2007/06/16  4.0.2   support ulem.sty
+%% 2007/06/14  4.0.1   \hu was too normal a CS. use \dhucs@hu intead.
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{dhucs}
+  [2012/11/08 v5.3.2  typesetting UTF-8 Korean documents]
+
+\ifx가가\else
+  \DeclareOption*{\PassOptionsToPackage\CurrentOption{kotexutf}}
+  \ProcessOptions\relax
+  \RequirePackage{kotexutf}
+  \expandafter\endinput
+\fi
+
+\newif\if@nonfrench
+\newif\if@hangul
+\newif\if@nojosa
+\newif\if@hanja
+\newif\if@dhucsfinemath
+
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname directlua\endcsname\relax\else
+  \DeclareOption{hangul}{\@hangultrue
+    \PassOptionsToPackage\CurrentOption{luatexko}}
+  \DeclareOption{hanja}{\@hangultrue\@hanjatrue
+    \PassOptionsToPackage\CurrentOption{luatexko}}
+  \DeclareOption{nounfonts}{\PassOptionsToPackage\CurrentOption{luatexko}}
+  \DeclareOption{nonfrench}{\@nonfrenchtrue}
+  \DeclareOption{finemath}{\@dhucsfinemathtrue}
+  \DeclareOption*{\OptionNotUsed}
+  \ProcessOptions\relax
+  \RequirePackage{luatexko}
+  \let\jong\relax
+  \let\jung\relax
+  \let\rieul\relax
+  \let\setInterHangulSkip\@gobble
+  \def\disablehangulfontspec{\finemathattr\z@}
+  \def\disablehangullinebreak{\finemathattr-"7FFFFFFF\relax}
+  \let\dhucs@hu\z@
+\fi
+
+\begingroup\expandafter\expandafter\expandafter\endgroup
+\expandafter\ifx\csname XeTeXrevision\endcsname\relax\else
+  \DeclareOption{hangul}{\@hangultrue
+    \PassOptionsToPackage\CurrentOption{xetexko}}
+  \DeclareOption{hanja}{\@hangultrue\@hanjatrue
+    \PassOptionsToPackage\CurrentOption{xetexko}}
+  \DeclareOption{nounfonts}{\PassOptionsToPackage\CurrentOption{xetexko}}
+  \DeclareOption{nonfrench}{\@nonfrenchtrue}
+  \DeclareOption{finemath}{\@dhucsfinemathtrue}
+  \DeclareOption*{\OptionNotUsed}
+  \ProcessOptions\relax
+  \RequirePackage{xetexko}
+  \def\setInterHangulSkip#1{\def\xetexkointerhchar{#1}}
+  \let\disablehangulfontspec\disablehangulspacing
+  \let\disablehangullinebreak\disablehangulspacingandlinebreak
+  \let\dhucs@hu\xetexkohu
+\fi
+
+\def\다{\nobreak 다}
+\def\unihangulchar#1{\char#1 }
+\let\DeclareUnicodeCharacter\@gobbletwo
+%\DeclareFontEncoding{LUC}{}{}
+%\DeclareFontSubstitution{LUC}{utbt}{m}{n}
+\def\SetHangulFonts#1#2#3{}
+\def\SetHanjaFonts#1#2#3{}
+\def\SetSerifFonts#1#2{}
+\def\SetSansFonts#1#2{}
+\def\SetAdhocFonts#1#2{}
+\let\usehangulfontspec\@gobble
+\let\declarenobreakspacefactor\nobreak
+\let\declarehanjaspacefactor\empty
+\let\cjksymbolunskip\empty
+\let\postcjksymskip\empty
+\let\postcjksymbol\empty
+\let\postcjksymnobreak\nobreak
+\let\cjksymbolskip\empty
+\if@hangul
+  \let\olddotemph\dotemph % save ...
+  \newdimen\dhucs@emph@raise
+  \unless\ifdefined\pdfstringdefPreHook\let\pdfstringdefPreHook\empty\fi
+  \let\dotemph\olddotemph % restore ...
+  \def\circemph#1{\begingroup\def\dotemphchar{^^^^02da}\dotemph{#1}\endgroup}
+  \def\useremph#1{\begingroup
+    \let\dotemphchar\useremphchar
+    \let\dotemphraise\useremphraisedim
+    \dotemph{#1}\endgroup}
+\fi
+\let\ungremph\empty
+\let\regremph\empty
+
+\endinput

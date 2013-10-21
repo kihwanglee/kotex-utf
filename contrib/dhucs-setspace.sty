@@ -1,0 +1,204 @@
+%% File `dhucs-secspace.sty`
+%%
+%% Copyright (C) 2007-2013 Kangsoo Kim <karnes at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+\def\filename{dhucs-setspace.sty}
+\def\filedate{2007/09/21}
+\def\fileversion{0.11}
+\ProvidesPackage{dhucs-setspace}[\filedate\space\fileversion\space
+  Line Spacing control of ko.TeX]
+
+\newif\if@singlespacefn\@singlespacefntrue
+\DeclareOption{nofloatspacing}{\@singlespacefnfalse}
+\newif\if@singlespacequote\@singlespacequotetrue
+\DeclareOption{noquotespacing}{\@singlespacequotefalse}
+\newif\if@hangul\@hangulfalse
+\DeclareOption{hangul}{\@hangultrue\AtEndOfPackage{\hangulspacing}}
+\newif\if@adjustfootnotesep\@adjustfootnotesepfalse
+\DeclareOption{adjustfootnotesep}{\@adjustfootnoteseptrue}
+\newif\if@adjustverbatim\@adjustverbatimfalse
+\DeclareOption{adjustverbatim}{\@adjustverbatimtrue}
+
+\DeclareOption*{\PassOptionsToPackage{\CurrentOptions}{setspace}}
+
+\ProcessOptions
+
+% |dhucs-interword|가 로드되지 않았을 경우를 대비하여
+\ifx\undefined\ucsfninterwordhook
+  \providecommand{\ucsfninterwordhook}{}%
+\fi
+
+\RequirePackage{setspace}
+
+%% Karnes.
+\newcommand{\Set@Hangulspace}[2]{%
+	\def\setspace@hangulspace{#1}%
+	\def\setspace@hangulfspace{#2}%
+	\setstretch{#1}%
+}
+
+\def\SetHangulspace#1#2{%
+	\AtBeginDocument{%
+		\gdef\setspace@hangulspace{#1}%
+		\gdef\setspace@hangulfspace{#2}%
+	}%
+	\setstretch{#1}%
+}
+
+\newcommand{\SetHangulVerbatimSpace}[1]{%
+	\def\setspace@hangulverbspace{#1}%
+}
+
+\if@hangul
+\Set@Hangulspace{1.333}{1.2}
+\else
+\Set@Hangulspace{1.0}{1.0}
+\fi
+
+\newcommand{\hangulspacing}{%
+	\setstretch{\setspace@hangulspace}% default
+}
+
+\newcommand{\hangulfspacing}{%
+	\setstretch{\setspace@hangulfspace}%
+}
+
+\newcommand{\hangulverbspacing}{%
+	\setstretch{\setspace@hangulverbspace}%
+}
+
+%% adjust verbatim
+%% if and only if [nofloatspacing] and [adjustverbatim] is on,
+%% the verbatim will be the same to the main text linestretch.
+%% if [hangul] it will adjust the linestretch to the quote or quotation
+%% the other case, it will be 1.0, I hope.
+%%
+\if@adjustverbatim
+\SetHangulVerbatimSpace{\setspace@hangulfspace}%
+\else
+\SetHangulVerbatimSpace{1.0}
+\fi
+
+%\let\latex@xfloat=\@xfloat
+\if@singlespacefn
+\def\@xfloat #1[#2]{%
+  \latex@xfloat #1[#2]%
+  \def\baselinestretch {\setspace@hangulfspace}%
+  \normalsize
+}
+\else
+  \let\@xfloat=\latex@xfloat
+\fi
+
+\if@adjustfootnotesep
+\if@hangul
+\if@singlespacefn
+	\ifcase \@ptsize \relax
+		\setlength\footnotesep{8.51 pt}% 10pt
+	\or
+		\setlength\footnotesep{9.6 pt}% 11pt
+	\or
+		\setlength\footnotesep{10.3 pt}% 12pt
+	\fi
+\else
+\fi
+\else\fi
+\else\fi
+
+\if@singlespacefn
+\long\def\@footnotetext#1{%
+  \insert\footins{%
+% GT:  Next line added.  Hook desired here!
+    \def\baselinestretch {\setspace@hangulfspace}%
+    \ucsfninterwordhook
+%	\@SetFloatspaces
+    \reset@font\footnotesize
+    \interlinepenalty\interfootnotelinepenalty
+    \splittopskip\footnotesep
+    \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
+    \hsize\columnwidth
+    \@parboxrestore
+    \protected@edef\@currentlabel{%
+      \csname p@footnote\endcsname\@thefnmark
+    }%
+    \color@begingroup
+      \@makefntext{%
+        \rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox}%
+    \color@endgroup}}
+
+% Minipage footnotes.
+
+\long\def\@mpfootnotetext#1{%
+  \global\setbox\@mpfootins\vbox{%
+    \unvbox \@mpfootins
+%  GT:  Next line added.  Hook desired here!
+    \def\baselinestretch {\setspace@hangulfspace}%
+    \ucsfninterwordhook
+%	\@SetFloatspaces
+    \reset@font\footnotesize
+    \hsize\columnwidth
+    \@parboxrestore
+    \protected@edef\@currentlabel{%
+      \csname p@mpfootnote\endcsname\@thefnmark}%
+    \color@begingroup
+      \@makefntext{%
+       \rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox}%
+   \color@endgroup}}
+
+\else\fi
+
+\def\@quotespacinghook{%
+	\if@singlespacequote%
+		\hangulfspacing%
+	\else%
+		\hangulspacing%
+	\fi%
+}
+
+\renewenvironment{quotation}
+               {\list{}{\listparindent 1.5em%
+                        \itemindent    \listparindent
+                        \rightmargin   \leftmargin
+                        \parsep        \z@ \@plus\p@}%
+                \item\relax
+                \@quotespacinghook%
+               }
+               {\endlist}
+\renewenvironment{quote}
+               {\list{}{\rightmargin\leftmargin}%
+                \item\relax
+                \@quotespacinghook%
+               }
+               {\endlist}
+
+\def\@verbatim{\trivlist
+  \if@adjustverbatim\hangulverbspacing\else\fi%
+  \item\relax
+  \if@minipage\else\vskip\parskip\fi
+  \leftskip\@totalleftmargin\rightskip\z@skip
+  \parindent\z@\parfillskip\@flushglue\parskip\z@skip
+  \@@par
+  \@tempswafalse
+  \def\par{%
+    \if@tempswa
+      \leavevmode \null \@@par\penalty\interlinepenalty
+    \else
+      \@tempswatrue
+      \ifhmode\@@par\penalty\interlinepenalty\fi
+    \fi}%
+  \let\do\@makeother \dospecials
+  \obeylines \verbatim@font \@noligs
+  \hyphenchar\font\m@ne
+  \everypar \expandafter{\the\everypar \unpenalty}%
+}
+
+\endinput

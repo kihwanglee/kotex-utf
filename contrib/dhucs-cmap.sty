@@ -1,0 +1,88 @@
+%% File `dhucs-cmap.sty`
+%%
+%% Copyright (C) 2007-2013 Dohyun Kim <nomos at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\ProvidesPackage{dhucs-cmap}
+  [2007/06/16 searchable PDF for dhucs upon pdftex]
+
+\RequirePackage{ifpdf}
+\ifpdf\else\expandafter\endinput\fi
+
+\newcommand*\AddUniSubCmap{%
+  \ifdefined \now@jamo@printing
+    \expandafter\jamo@dh@cmap
+  \else
+    \expandafter\normal@dh@cmap
+  \fi
+}
+
+\newcommand*\normal@dh@cmap[1]{%
+  \let\dh@cm@ppl@ne\@empty
+  \expandafter\uppercase\expandafter{\expandafter\count@\expandafter"#1\relax}%
+  \expandafter\get@unisubcm@p\expandafter{\number\numexpr256*\count@\relax}%
+  \expandafter\add@unisubcm@p\expandafter{\dh@cm@ppl@ne}%
+}
+
+\newcommand*\get@unisubcm@p[1]{%
+  \ifnum#1>65535
+    \expandafter\get@unisubcm@p\expandafter{\number\numexpr 55296+
+      \dimexpr.0009765625\dimexpr\number#1sp-\p@\relax\relax\relax}%
+    \expandafter\get@unisubcm@p\expandafter{\number\numexpr#1-9216
+      -1024*\dimexpr.0009765625\dimexpr\number#1sp-\p@\relax\relax\relax}%
+  \else
+    \@tempcnta\numexpr % 1 / 4096 = .000244140625
+      \number\dimexpr.000244140625\dimexpr#1sp\relax\relax\relax
+    \edef\dh@cm@ppl@ne{\dh@cm@ppl@ne\hexnumber@\@tempcnta}%
+    \count@\numexpr#1-4096*\@tempcnta\relax
+    \@tempcnta\numexpr % 1 / 256 = .00390625
+      \number\dimexpr.00390625\dimexpr\count@ sp\relax\relax\relax
+    \edef\dh@cm@ppl@ne{\dh@cm@ppl@ne\hexnumber@\@tempcnta}%
+    \count@\numexpr\count@-\@cclvi*\@tempcnta\relax
+    \@tempcnta\numexpr % 1 / 16 = .0625
+      \number\dimexpr.0625\dimexpr\count@ sp\relax\relax\relax
+    \edef\dh@cm@ppl@ne{\dh@cm@ppl@ne\hexnumber@\@tempcnta}%
+    \@tempcnta\numexpr\count@-\sixt@@n*\@tempcnta\relax
+    \edef\dh@cm@ppl@ne{\dh@cm@ppl@ne\hexnumber@\@tempcnta}%
+  \fi
+}
+
+\newcommand*\add@unisubcm@p[1]{%
+  \unless\ifcsname dhucs-cmap-\h@ngulpl@ne\endcsname
+    \immediate\pdfobj stream {%
+      /CIDInit /ProcSet findresource begin
+      12 dict begin begincmap
+      /CIDSystemInfo << /Registry (TeX)
+        /Ordering (UNI\h@ngulpl@ne)
+        /Supplement 0 >> def
+      /CMapName /TeX-UNI\h@ngulpl@ne-0 def
+      /CMapType 2 def
+      1 begincodespacerange <00> <FF> endcodespacerange
+      1 beginbfrange <00> <FF> <#1> endbfrange
+      endcmap CMapName currentdict /CMap defineresource pop end end }%
+    \expandafter\xdef\csname dhucs-cmap-\h@ngulpl@ne\endcsname
+      {\the\pdflastobj}%
+  \fi
+  \pdffontattr\font@name{/ToUnicode
+    \csname dhucs-cmap-\h@ngulpl@ne\endcsname\space 0 R}%
+}
+
+\newcommand*\jamo@dh@cmap[1]{%
+  \unless\ifcsname dhucs-cmap-mid-#1\endcsname
+    \immediate\pdfobj stream file {oldhanyang#1.cmap}%
+    \expandafter\xdef\csname dhucs-cmap-mid-#1\endcsname{\the\pdflastobj}%
+  \fi
+  \pdffontattr\font@name{/ToUnicode
+    \csname dhucs-cmap-mid-#1\endcsname\space 0 R}%
+}
+
+\def\dhucs@define@newfont{\define@newfont\AddUniSubCmap\h@ngulpl@ne}
+
+\endinput

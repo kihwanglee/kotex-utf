@@ -1,0 +1,18 @@
+%% File `lucuhcmj.fd`
+%%
+%% Copyright (c) 2013 Kangsoo Kim <karnes at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\ProvidesFile{lucuhcmj.fd}[2013/09/26 UHC Myeongjo font definitions]
+\DeclareFontFamily{LUC}{uhcmj}{\hyphenchar\font\m@ne}
+\DeclareFontShape {LUC}{uhcmj}{m}{n}{<-> LUC * uwmj}{}
+\DeclareFontShape {LUC}{uhcmj}{m}{sl}{<-> LUC * uwmjo}{}
+\DeclareFontShape {LUC}{uhcmj}{m}{it}{<-> LUCssub * uhcmj/m/sl}{}
+\endinput

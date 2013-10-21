@@ -1,0 +1,155 @@
+%% File `lucenc.dfu`
+%%
+%% Copyright (C) 2007-2013 Dohyun Kim <nomos at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\ifdefined\ProvidesFile
+  \ProvidesFile{lucenc.dfu}[2007/09/05 UTF-8 support for dhucs]
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%
+%%% CJK 기호문자 설정
+%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareUnicodeCharacter{00B7}% ·
+  {\leavevmode\hbox to.7em{\hss\textperiodcentered\hss}\postcjksymbol}
+\DeclareUnicodeCharacter{2018}% ‘
+  {\cjksymbolskip\textquoteleft\postcjksymnobreak}
+\DeclareUnicodeCharacter{2019}% ’
+  {\cjksymbolunskip\kernbeforelatinquoteclose\textquoteright\postcjksymskip}
+\DeclareUnicodeCharacter{201C}% “
+  {\cjksymbolskip\textquotedblleft\postcjksymnobreak}
+\DeclareUnicodeCharacter{201D}% ”
+  {\cjksymbolunskip\kernbeforelatinquoteclose\textquotedblright\postcjksymskip}
+\DeclareUnicodeCharacter{3001}% 、
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"3001}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{3002}% 。
+  {\cjksymbolunskip\hbox to.6em{\unihangulchar{"3002}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{3008}% 〈
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"3008}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{3009}% 〉
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"3009}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{300A}% 《
+  {\cjksymbolskip\hbox to.7em{\hss\unihangulchar{"300A}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{300B}% 》
+  {\cjksymbolunskip\hbox to.7em{\unihangulchar{"300B}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{300C}% 「
+  {\cjksymbolskip\hbox to.6em{\hss\unihangulchar{"300C}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{300D}% 」
+  {\cjksymbolunskip\hbox to.6em{\unihangulchar{"300D}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{300E}% 『
+  {\cjksymbolskip\hbox to.6em{\hss\unihangulchar{"300E}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{300F}% 』
+  {\cjksymbolunskip\hbox to.6em{\unihangulchar{"300F}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{3010}% 【
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"3010}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{3011}% 】
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"3011}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{3014}% 〔
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"3014}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{3015}% 〕
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"3015}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{3016}% 〖
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"3016}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{3017}% 〗
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"3017}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{3018}% 〘
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"3018}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{3019}% 〙
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"3019}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{301A}% 〚
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"301A}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{301B}% 〛
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"301B}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF01}% ！
+  {\cjksymbolunskip\hbox to.5em{\hss\unihangulchar{"FF01}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF08}% （
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"FF08}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{FF09}% ）
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"FF09}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF0C}% ，
+  {\cjksymbolunskip\hbox to.5em{\hss\unihangulchar{"FF0C}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF0E}% ．
+  {\cjksymbolunskip\hbox to.5em{\hss\unihangulchar{"FF0E}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF1A}% ：
+  {\cjksymbolunskip\hbox to.5em{\hss\unihangulchar{"FF1A}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF1B}% ；
+  {\cjksymbolunskip\hbox to.5em{\hss\unihangulchar{"FF1B}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF1C}% ＜
+  {\cjksymbolskip\hbox to 1em{\hss\unihangulchar{"FF1C}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{FF1D}% ＝
+  {\leavevmode\hbox to.9em{\hss\unihangulchar{"FF1D}\hss}\postcjksymbol}
+\DeclareUnicodeCharacter{FF1E}% ＞
+  {\cjksymbolunskip\hbox to 1em{\unihangulchar{"FF1E}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF1F}% ？
+  {\cjksymbolunskip\hbox to.667em{\hss\unihangulchar{"FF1F}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF3B}% ［
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"FF3B}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{FF3D}% ］
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"FF3D}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF5B}% ｛
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"FF5B}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{FF5D}% ｝
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"FF5D}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF61}% ｡  HALFWIDTH IDEOGRAPHIC FULL STOP
+  {\cjksymbolunskip\hbox to.5em{\hss\unihangulchar{"FF61}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF62}% ｢  HALFWIDTH LEFT CORNER BRACKET
+  {\cjksymbolskip\hbox to.5em{\hss\unihangulchar{"FF62}}\postcjksymnobreak}
+\DeclareUnicodeCharacter{FF63}% ｣  HALFWIDTH RIGHT CORNER BRACKET
+  {\cjksymbolunskip\hbox to.5em{\unihangulchar{"FF63}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF64}% ､  HALFWIDTH IDEOGRAPHIC COMMA
+  {\leavevmode\hbox to.5em{\hss\unihangulchar{"FF64}\hss}\postcjksymskip}
+\DeclareUnicodeCharacter{FF65}% ･  HALFWIDTH KATAKANA MIDDLE DOT
+  {\leavevmode\hbox to.9em{\hss\unihangulchar{"FF65}\hss}\postcjksymbol}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% CJK 문자 다음에 오는 ASCII 문자의 카테고리 설정
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\expandafter\gdef\csname nexttohangul-1\endcsname{%
+  % ascii opening parentheses.
+  % 직전에 \breakbeforeasciichar (줄바꿈 허용하는 공백) 삽입.
+  ([`%
+}
+
+\expandafter\gdef\csname nexttotrivcj-1\endcsname{%
+  % trivcj 환경에서의 ascii opening parentheses
+  ([`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz%
+}
+
+\expandafter\gdef\csname nexttohangul-2\endcsname{%
+  % ascii closing parentheses.
+  % 직전에 아무 것도 삽입하지 않음. spacefactor조차도!
+  )]'%
+}
+
+\expandafter\gdef\csname nexttohangul-3\endcsname{%
+  % ascii numbers.
+  % 직전에 \kernbeforeasciichars (줄바꿈 없는 공백) 삽입.
+  1234567890:;/%
+}
+
+\expandafter\gdef\csname nexttohangul-4\endcsname{%
+  % ascii fullstop.
+  .%
+}
+
+\expandafter\gdef\csname nexttohangul-5\endcsname{%
+  % ascii question mark.
+  ?%
+}
+
+\expandafter\gdef\csname nexttohangul-6\endcsname{%
+  % ascii exclamation mark.
+  !%
+}
+
+\endinput
+

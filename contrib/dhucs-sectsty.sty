@@ -1,0 +1,259 @@
+%% File `dhucs-sectsty.sty`
+%%
+%% (C) Copyright 2007-2013 Kangsoo Kim <karnes at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\ProvidesPackage{dhucs-sectsty}[2006/04/20]
+
+\RequirePackage{sectsty}
+%% borrowed from sectsty
+\DeclareOption{garrulous}{\def\SS@chatlevel{0}}
+\DeclareOption{chatty}{\def\SS@chatlevel{1}}
+\DeclareOption{taciturn}{\def\SS@chatlevel{2}}
+\DeclareOption{yorkshire}{\def\SS@chatlevel{3}} 
+%% newly defined options
+\newif\if@ensec
+\DeclareOption{ensec}{\@ensectrue}
+\newif\if@adjchapnumskip
+\DeclareOption{THE}{\@adjchapnumskipfalse}
+\@ensecfalse
+\@adjchapnumskiptrue
+%% Now, process the options.
+\ProcessOptions
+
+\newlength\KSTHE@skip
+\setlength\KSTHE@skip{.3em}
+\newcommand\KSTHEskip{%
+	\hskip\KSTHE@skip
+}
+
+\def\kscntformat#1#2#3{\@namedef{pre@#1cnt}{#2}
+                       \@namedef{post@#1cnt}{#3}}
+\if@adjchapnumskip
+\kscntformat{part}{\KSTHE\KSTHEskip}{\KSTHEskip\partname}
+\kscntformat{chapter}{\KSTHE\KSTHEskip}{\KSTHEskip\chaptername}
+\kscntformat{section}{\KSTHE\KSTHEskip}{\KSTHEskip\sectionname}
+\else\fi
+
+\@ifclassloaded{article}{% <article>
+  \def\@part[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \refstepcounter{part}%
+      \addcontentsline{toc}{part}%
+        {\pre@partcnt\thepart\post@partcnt\hspace{1em}#1}%
+    \else
+      \addcontentsline{toc}{part}{#1}%
+    \fi
+    {\parindent \z@ \raggedright
+     \interlinepenalty \@M
+     \normalfont
+     \ifnum \c@secnumdepth >\m@ne
+       \Large\bfseries\SS@partnumberfont \pre@partcnt\thepart\post@partcnt
+       \par\nobreak
+     \fi
+     \huge \bfseries\SS@parttitlefont #2%
+     \markboth{}{}\par}%
+   \nobreak
+   \vskip 3ex
+   \@afterheading}
+}{% <report|book>
+  \@ifundefined{@part}{}{%
+    \def\@part[#1]#2{%
+      \ifnum \c@secnumdepth >-2\relax
+        \refstepcounter{part}%
+        \addcontentsline{toc}{part}%
+          {\pre@partcnt\thepart\post@partcnt\hspace{1em}#1}%
+      \else
+        \addcontentsline{toc}{part}{#1}%
+      \fi
+      \markboth{}{}%
+      {\centering
+       \interlinepenalty \@M
+       \normalfont
+       \ifnum \c@secnumdepth >-2\relax
+         \huge\bfseries\SS@partnumberfont \pre@partcnt\thepart\post@partcnt
+         \par
+         \vskip 20\p@
+       \fi
+       \Huge \bfseries\SS@parttitlefont #2\par}%
+     \@endpart}
+  }
+}
+
+\@ifclassloaded{book}{%
+  \def\@chapter[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter
+        \refstepcounter{chapter}%
+        \typeout{\pre@chaptercnt\thechapter\post@chaptercnt}%
+        \addcontentsline{toc}{chapter}%
+          {\protect\numberline{%
+             \pre@chaptercnt\thechapter\post@chaptercnt}#1}%
+      \else
+        \addcontentsline{toc}{chapter}{#1}%
+      \fi
+    \else
+      \addcontentsline{toc}{chapter}{#1}%
+    \fi
+    \chaptermark{#1}%
+    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+    \if@twocolumn
+      \@topnewpage[\@makechapterhead{#2}]%
+    \else
+      \@makechapterhead{#2}%
+      \@afterheading
+    \fi}
+  \def\@makechapterhead#1{%
+    \vspace*{50\p@}%
+    {\parindent \z@ \raggedright \normalfont
+     \ifnum \c@secnumdepth >\m@ne
+       \if@mainmatter
+         \huge\bfseries\SS@chapnumfont
+         \pre@chaptercnt\thechapter\post@chaptercnt
+         \par\nobreak
+         \vskip 20\p@
+       \fi
+     \fi
+     \interlinepenalty\@M
+     \Huge \bfseries\SS@chaptitlefont #1\par\nobreak
+     \vskip 40\p@
+     }}}{}%
+\@ifclassloaded{report}{%
+  \def\@chapter[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \refstepcounter{chapter}%
+      \typeout{\pre@chaptercnt\thechapter\post@chaptercnt}
+      \addcontentsline{toc}{chapter}%
+        {\protect\numberline{%
+           \pre@chaptercnt\thechapter\post@chaptercnt}#1}%
+    \else
+      \addcontentsline{toc}{chapter}{#1}%
+    \fi
+    \chaptermark{#1}%
+    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+    \if@twocolumn
+      \@topnewpage[\@makechapterhead{#2}]%
+    \else
+      \@makechapterhead{#2}%
+      \@afterheading
+    \fi}
+  \def\@makechapterhead#1{%
+    \vspace*{50\p@}%
+    {\parindent \z@ \raggedright \normalfont
+      \ifnum \c@secnumdepth >\m@ne
+        \huge\bfseries\SS@chapnumfont
+        \pre@chaptercnt\thechapter\post@chaptercnt
+        \par\nobreak
+        \vskip 20\p@
+      \fi
+      \interlinepenalty\@M
+      \Huge \bfseries\SS@chaptitlefont #1\par\nobreak
+      \vskip 40\p@
+    }}}{}
+
+\@ifundefined{chapter}{}{%
+  \renewcommand*\l@chapter[2]{%
+    \ifnum \c@tocdepth >\m@ne
+      \addpenalty{-\@highpenalty}%
+      \vskip 1.0em \@plus\p@
+      \setbox\z@=\hbox{\bfseries\pre@chaptercnt\post@chaptercnt~}
+      \setlength\@tempdima{1.5em}
+      \advance\@tempdima\wd\z@
+      \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \bfseries
+        \advance\leftskip \@tempdima
+        \hskip -\leftskip
+        #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+        \penalty\@highpenalty
+      \endgroup
+    \fi}}
+
+\if@ensec
+\kscntformat{section}{}{}
+\newcommand\enc@sec@skip{2em}
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+      {-3.5ex \@plus -1ex \@minus -.2ex}%
+      {2.3ex \@plus.2ex}%
+      {\normalfont\Large\bfseries\SS@sectfont}} 
+\@ifclassloaded{article}{}{%
+	\renewcommand*\l@section{\@dottedtocline{1}{1.3em}{2em}}%
+	\renewcommand*\l@subsection{\@dottedtocline{2}{3.3em}{2.8em}}%
+}
+
+\else
+\@ifundefined{section}{}{%
+  \def\section{%
+    \if@noskipsec \leavevmode \fi
+    \par
+    \@afterindentfalse
+    \if@nobreak
+      \everypar{}%
+    \else
+      \addpenalty\@secpenalty\addvspace{3.5ex \@plus 1ex \@minus .2ex\relax}
+    \fi
+    \secdef\ks@sect\ks@ssect}
+  \def\ks@sect[#1]#2{%
+    \ifnum \c@secnumdepth<1
+      \let\@svsec\@empty
+    \else
+      \refstepcounter{section}%
+      \protected@edef\@svsec{%
+        \noexpand\pre@sectioncnt\thesection\noexpand\post@sectioncnt
+        \quad\relax}%
+    \fi
+    \begingroup
+      \normalfont\Large\bfseries\SS@sectfont{%
+        \@hangfrom{\hskip \z@\relax\@svsec}%
+        \interlinepenalty \@M #2\@@par}%
+    \endgroup
+    \sectionmark{#1}%
+    \addcontentsline{toc}{section}{%
+      \ifnum\c@secnumdepth<1 \else
+        \protect\numberline{\pre@sectioncnt\thesection\post@sectioncnt}%
+      \fi
+      #1}
+    \@xsect{2.3ex \@plus.2ex}}
+  \def\ks@ssect#1{%
+    \begingroup
+      \normalfont\Large\bfseries\SS@sectfont{%
+        \@hangfrom{\hskip \z@}%
+        \interlinepenalty \@M #1\@@par}%
+    \endgroup
+    \@xsect{2.3ex \@plus.2ex}}
+}
+
+\@ifclassloaded{article}{%
+  \renewcommand*\l@section[2]{%
+    \ifnum \c@tocdepth >\z@
+      \addpenalty{\@secpenalty}%
+      \addvspace{1.0em \@plus\p@}%
+      \setbox\z@=\hbox{\bfseries\pre@sectioncnt\post@sectioncnt}%
+      \setlength\@tempdima{1.5em}%
+      \advance\@tempdima\wd\z@
+      \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \bfseries
+        \advance\leftskip\@tempdima
+        \hskip -\leftskip
+        #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+      \endgroup
+    \fi}
+}{\@ifundefined{l@section}{}{%
+    \renewcommand*\l@section{\@dottedtocline{1}{1em}{4em}}}%1.5em 2.3em
+}
+
+\fi
+
+\endinput

@@ -1,0 +1,48 @@
+%% File `kotex-varioref.sty`
+%%
+%% (C) Copyright 2008-2013 slomo
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\@ifpackageloaded{varioref}{}{\RequirePackage{varioref}[2006/05/13]}
+
+
+%
+% user interfaces
+%
+\renewcommand{\vref}[2][\reftextcurrent]
+	{\vpageref[#1]{#2} \ref{#2}}
+\renewcommand{\vrefrange}[3][\reftextcurrent]
+	{\vpagerefrange[#1]{#2}{#3}의 \reftextlabelrange{#2}{#3}}
+
+
+%
+% reftexts
+%
+\renewcommand{\reftextfaceafter}{다음 \pagename}%
+\renewcommand{\reftextfacebefore}{앞 \pagename}%
+\renewcommand{\reftextafter}{다음 \pagename}%
+\renewcommand{\reftextbefore}{앞 \pagename}%
+\renewcommand{\reftextcurrent}{현재 \pagename}%
+\renewcommand{\reftextfaraway}[1]{\pageref{#1}\pagename}%
+\renewcommand{\reftextpagerange}[2]{\pageref{#1}--\pageref{#2}\pagename}%
+\renewcommand{\reftextlabelrange}[2]{\ref{#1}에서 \ref{#2}}
+
+%
+% labelformats
+%
+\labelformat{part}{#1\partname}
+\labelformat{chapter}{#1\chaptername}
+\labelformat{section}{#1\sectionname}
+\labelformat{figure}{\figurename~#1}
+\labelformat{table}{\tablename~#1}
+\labelformat{footnote}{각주~#1}
+
+\endinput
+

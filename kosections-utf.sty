@@ -1,0 +1,548 @@
+%% File `kosections-utf.tex`
+%%
+%% (C) Copyright 2007-2013 Dohyun Kim <nomos at ktug org>
+%%                         Kangsoo Kim <karnes at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\ProvidesFile{kosections-utf}
+  [2013/10/20 hangul option to kotex/utf]
+
+%\def\hNum#1{\@hNum{\@nameuse{c@#1}}}
+%\def\@hNum#1{\ifcase#1\or 일\or 이\or 삼\or 사\or 오\or 육\or 칠\or
+%  팔\or 구\or 십\or 십일\or 십이\or 십삼\or 십사\or 십오\or 십육\or
+%  십칠\or 십팔\or 십구\or 이십\or 이십일\or 이십이\or 이십삼\or
+%  이십사\else\@ctrerr\fi}
+%\def\hanjanum#1{\@hanjanum{\@nameuse{c@#1}}}
+%\def\@hanjanum#1{\ifcase#1\or 一\or 二\or 三\or
+%  四\or 五\or 六\or 七\or 八\or 九\or 十\or
+%  十一\or 十二\or 十三\or 十四\or 十五\or
+%  十六\or 十七\or 十八\or 十九\or 二十\or
+%  二十一\or 二十二\or 二十三\or 二十四\else\@ctrerr\fi}
+%\def\HArabic#1{\@HArabic{\@nameuse{c@#1}}}
+%\def\@HArabic#1{\ifcase#1\or 1\rieul\or 2\jung\or 3\jong\or 4\jung\or 5\jung\or
+%  6\jong\or 7\rieul\or 8\rieul\or 9\jung\or 10\jong\or 11\rieul\or 12\jung\or
+%  13\jong\or 14\jung\or 15\jung\or 16\jong\or 17\rieul\or 18\rieul\or 19\jung\or
+%  20\jong\or 21\rieul\or 22\jung\or 23\jong\or 24\jung\else\@ctrerr\fi}
+
+%% 한글 기호문자 처리를 위한 정의들.
+%% 일부 클래스(예: memoir)에서 \textsubscript를 정의하고 있으므로,
+%% 여기서는 \TEXTsubscript로 정의한다. 만약 이 정의를 문서에서
+%% 사용하고 싶으면 \let\textsubscript\TEXTsubscript로 할 것.
+\protected\def\TEXTsubscript#1{%
+  \@TEXTsubscript{\selectfont#1}}
+\newcommand{\@TEXTsubscript}[1]{%
+  {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}}%
+\DeclareUnicodeCharacter{00BC}% 1/4
+  {\textsuperscript1\kern-.45em\unihangulchar{65295}\kern-.45em\TEXTsubscript4}
+\DeclareUnicodeCharacter{00BD}% 1/2
+  {\textsuperscript1\kern-.45em\unihangulchar{65295}\kern-.45em\TEXTsubscript2}
+\DeclareUnicodeCharacter{00BE}% 3/4
+  {\textsuperscript3\kern-.45em\unihangulchar{65295}\kern-.45em\TEXTsubscript4}
+\DeclareUnicodeCharacter{02D0}% ː
+  {\unihangulchar{"02D0}}% 8251=0x203B
+\DeclareUnicodeCharacter{2025}% ‥
+  {\unihangulchar{"2025}}% 8251=0x203B
+\DeclareUnicodeCharacter{2015}% ―
+  {\nobreak\hskip\dhucs@hu\unihangulchar{"2015}\hskip\dhucs@hu\relax}% 8251=0x203B
+\DeclareUnicodeCharacter{2312}% ⌒
+  {\unihangulchar{"2312}}% 8251=0x203B
+\DeclareUnicodeCharacter{203B}% ※
+  {\unihangulchar{8251}}% 8251=0x203B
+
+%% konames-utf
+\RequirePackage{konames-utf}
+
+%% 단원의 한글화
+%% =============
+%%
+%% Part I       --> 제 I 편, 第 I 篇
+%% Chapter 1    --> 제 1 장, 第 1 章   <book,report>
+%% Section 1    --> 제 1 절, 第 1 節
+%% Appendix A   --> 부록  A, 附綠  A
+%%
+%% 위와 같은 단원의 한글화는 절(節)까지 영향을 미친다. 그러므로 우리는
+%% 목차에 \subsubsection까지 단원이 번호와 함께 나오도록 한다.
+%% article에서는 이미 3으로 지정되었으나, 그외에서는 2로 지정되어
+%% \subsection까지만 번호가 목차에 나오도록 되어 있다.
+\setcounter{secnumdepth}{\thr@@}
+
+\@ifclassloaded{article}{% <article>
+  \renewcommand{\appendix}{\par
+    \setcounter{section}{0}%
+    \setcounter{subsection}{0}%
+    \def\@chapapp{\appendixname}% 부록의 한글화에 의해 필요.
+    \kscntformat{section}{\appendixname~}{}
+    \def\thesection{\@Alph\c@section}}%
+}{\@ifundefined{@chapapp}{}{% <report|book>
+    \renewcommand\thesection{\@arabic\c@section}
+    \renewcommand\appendix{\par
+      \setcounter{chapter}{0}%
+      \setcounter{section}{0}%
+      \renewcommand\@chapapp{\appendixname}%
+      \kscntformat{chapter}{\appendixname~}{}
+      \renewcommand\thechapter{\@Alph\c@chapter}}%
+}}
+
+%% 위와같은 재정의로 다음과 같은 문제가 발생한다.
+%% 1. \part는 \partname~\thepart로 나오게 된다. 편~I
+%% 2. \chapter는 \@chapapp{} \thechapter로. 장~1
+%% 3. \section은 \sectionname~\thesection으로. 절~1
+%% 4. 목차작성의 들여쓰기가 우리말 환경에 적당하지 않다.
+%% 5. 페이지 heading의 글자체가 \slshape으로 바뀜으로서 우리말이
+%%    불안정해진다.
+%%
+%% 이런 약점을 보완하기 위해 단원의 일련번호의 앞과 뒤에 끼워넣을
+%% 모듬을 다음과 같이 설정한다.
+\def\kscntformat#1#2#3{\@namedef{pre@#1cnt}{#2}
+                       \@namedef{post@#1cnt}{#3}}
+\kscntformat{part}{\KSTHE~}{~\partname}
+\kscntformat{chapter}{\KSTHE~}{~\chaptername}
+\kscntformat{section}{\KSTHE~}{~\sectionname}
+
+\@ifclassloaded{article}{% <article>
+  \def\@part[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \refstepcounter{part}%
+      \addcontentsline{toc}{part}%
+        {\pre@partcnt\thepart\post@partcnt\hspace{1em}#1}%
+    \else
+      \addcontentsline{toc}{part}{#1}%
+    \fi
+    {\parindent \z@ \raggedright
+     \interlinepenalty \@M
+     \normalfont
+     \ifnum \c@secnumdepth >\m@ne
+       \Large\bfseries \pre@partcnt\thepart\post@partcnt
+       \par\nobreak
+     \fi
+     \huge \bfseries #2%
+     \markboth{}{}\par}%
+   \nobreak
+   \vskip 3ex
+   \@afterheading}
+}{}
+\@ifclassloaded{report}{%
+    \def\@part[#1]#2{%
+      \ifnum \c@secnumdepth >-2\relax
+        \refstepcounter{part}%
+        \addcontentsline{toc}{part}%
+          {\pre@partcnt\thepart\post@partcnt\hspace{1em}#1}%
+      \else
+        \addcontentsline{toc}{part}{#1}%
+      \fi
+      \markboth{}{}%
+      {\centering
+       \interlinepenalty \@M
+       \normalfont
+       \ifnum \c@secnumdepth >-2\relax
+         \huge\bfseries \pre@partcnt\thepart\post@partcnt
+         \par
+         \vskip 20\p@
+       \fi
+       \Huge \bfseries #2\par}%
+     \@endpart}
+}{}
+\@ifclassloaded{book}{%
+    \def\@part[#1]#2{%
+      \ifnum \c@secnumdepth >-2\relax
+        \refstepcounter{part}%
+        \addcontentsline{toc}{part}%
+          {\pre@partcnt\thepart\post@partcnt\hspace{1em}#1}%
+      \else
+        \addcontentsline{toc}{part}{#1}%
+      \fi
+      \markboth{}{}%
+      {\centering
+       \interlinepenalty \@M
+       \normalfont
+       \ifnum \c@secnumdepth >-2\relax
+         \huge\bfseries \pre@partcnt\thepart\post@partcnt
+         \par
+         \vskip 20\p@
+       \fi
+       \Huge \bfseries #2\par}%
+     \@endpart}
+}{}
+
+\@ifclassloaded{book}{%
+  \def\@chapter[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter
+        \refstepcounter{chapter}%
+        \typeout{\pre@chaptercnt\thechapter\post@chaptercnt}%
+        \addcontentsline{toc}{chapter}%
+          {\protect\numberline{%
+             \pre@chaptercnt\thechapter\post@chaptercnt}#1}%
+      \else
+        \addcontentsline{toc}{chapter}{#1}%
+      \fi
+    \else
+      \addcontentsline{toc}{chapter}{#1}%
+    \fi
+    \chaptermark{#1}%
+    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+    \if@twocolumn
+      \@topnewpage[\@makechapterhead{#2}]%
+    \else
+      \@makechapterhead{#2}%
+      \@afterheading
+    \fi}
+  \def\@makechapterhead#1{%
+    \vspace*{50\p@}%
+    {\parindent \z@ \raggedright \normalfont
+     \ifnum \c@secnumdepth >\m@ne
+       \if@mainmatter
+         \huge\bfseries
+         \pre@chaptercnt\thechapter\post@chaptercnt
+         \par\nobreak
+         \vskip 20\p@
+       \fi
+     \fi
+     \interlinepenalty\@M
+     \Huge \bfseries #1\par\nobreak
+     \vskip 40\p@
+     }}
+  \renewcommand*\l@chapter[2]{%
+    \ifnum \c@tocdepth >\m@ne
+      \addpenalty{-\@highpenalty}%
+      \vskip 1.0em \@plus\p@
+      \setbox\z@=\hbox{\bfseries\pre@chaptercnt\post@chaptercnt~}
+      \setlength\@tempdima{1.5em}
+      \advance\@tempdima\wd\z@
+      \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \bfseries
+        \advance\leftskip \@tempdima
+        \hskip -\leftskip
+        #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+        \penalty\@highpenalty
+      \endgroup
+    \fi}
+}{}%
+\@ifclassloaded{report}{%
+  \def\@chapter[#1]#2{%
+    \ifnum \c@secnumdepth >\m@ne
+      \refstepcounter{chapter}%
+      \typeout{\pre@chaptercnt\thechapter\post@chaptercnt}
+      \addcontentsline{toc}{chapter}%
+        {\protect\numberline{%
+           \pre@chaptercnt\thechapter\post@chaptercnt}#1}%
+    \else
+      \addcontentsline{toc}{chapter}{#1}%
+    \fi
+    \chaptermark{#1}%
+    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+    \if@twocolumn
+      \@topnewpage[\@makechapterhead{#2}]%
+    \else
+      \@makechapterhead{#2}%
+      \@afterheading
+    \fi}
+  \def\@makechapterhead#1{%
+    \vspace*{50\p@}%
+    {\parindent \z@ \raggedright \normalfont
+      \ifnum \c@secnumdepth >\m@ne
+        \huge\bfseries
+        \pre@chaptercnt\thechapter\post@chaptercnt
+        \par\nobreak
+        \vskip 20\p@
+      \fi
+      \interlinepenalty\@M
+      \Huge \bfseries #1\par\nobreak
+      \vskip 40\p@
+    }}
+  \renewcommand*\l@chapter[2]{%
+    \ifnum \c@tocdepth >\m@ne
+      \addpenalty{-\@highpenalty}%
+      \vskip 1.0em \@plus\p@
+      \setbox\z@=\hbox{\bfseries\pre@chaptercnt\post@chaptercnt~}
+      \setlength\@tempdima{1.5em}
+      \advance\@tempdima\wd\z@
+      \begingroup
+        \parindent \z@ \rightskip \@pnumwidth
+        \parfillskip -\@pnumwidth
+        \leavevmode \bfseries
+        \advance\leftskip \@tempdima
+        \hskip -\leftskip
+        #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+        \penalty\@highpenalty
+      \endgroup
+    \fi}
+}{}
+
+%%%%% make compatible with tex4ht ?
+\def\dhucs@seccntformat#1#2{%
+        \ifnum#2=\@ne\pre@sectioncnt\fi
+        \csname the#1\endcsname
+        \ifnum#2=\@ne\post@sectioncnt\fi
+        \quad}
+\def\@sect#1#2#3#4#5#6[#7]#8{%
+  \ifnum #2>\c@secnumdepth
+    \let\@svsec\@empty
+  \else
+    \refstepcounter{#1}%
+    \protected@edef\@svsec{\dhucs@seccntformat{#1}{#2}\relax}%
+  \fi
+  \@tempskipa #5\relax
+  \ifdim \@tempskipa>\z@
+    \begingroup
+      #6{%
+        \@hangfrom{\hskip #3\relax\@svsec}%
+          \interlinepenalty \@M #8\@@par}%
+    \endgroup
+    \csname #1mark\endcsname{#7}%
+    \addcontentsline{toc}{#1}{%
+      \ifnum #2>\c@secnumdepth \else
+        \ifnum #2=1 % in case of section
+          \protect\numberline{\pre@sectioncnt
+            \csname the#1\endcsname\post@sectioncnt}%
+        \else \protect\numberline{\csname the#1\endcsname}%
+        \fi
+      \fi
+      #7}%
+  \else
+    \def\@svsechd{%
+      #6{\hskip #3\relax
+      \@svsec #8}%
+      \csname #1mark\endcsname{#7}%
+      \addcontentsline{toc}{#1}{%
+        \ifnum #2>\c@secnumdepth \else
+          \protect\numberline{\csname the#1\endcsname}%
+        \fi
+        #7}}%
+  \fi
+  \@xsect{#5}}
+%%%%%
+
+\@ifclassloaded{article}{%
+  \renewcommand*\l@section[2]{%
+    \ifnum \c@tocdepth >\z@
+    \addpenalty\@secpenalty%
+    \addvspace{1.0em \@plus\p@}%
+    \begingroup
+    \parindent \z@ \rightskip \@pnumwidth
+    \parfillskip -\@pnumwidth
+    \leavevmode \bfseries
+    \settowidth{\@tempdima}{\pre@sectioncnt\post@sectioncnt}%
+    \addtolength{\@tempdima}{1.5em}%
+    \advance\leftskip\@tempdima
+    \hskip -\leftskip
+    #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+    \endgroup
+    \fi}
+}{}
+\@ifclassloaded{book}{
+    \renewcommand*\l@section{%
+      \settowidth{\@tempdima}{\pre@sectioncnt\post@sectioncnt}%
+      \addtolength{\@tempdima}{2.3em}%
+      \@dottedtocline{1}{1em}{\@tempdima}}%1.5em 2.3em
+}{}
+\@ifclassloaded{report}{
+    \renewcommand*\l@section{%
+      \settowidth{\@tempdima}{\pre@sectioncnt\post@sectioncnt}%
+      \addtolength{\@tempdima}{2.3em}%
+      \@dottedtocline{1}{1em}{\@tempdima}}%1.5em 2.3em
+}{}
+
+
+%% 다음은 \ps@headings과 \ps@myheadings를 한글에 맞게 수정한 것이다.
+%% 각각의 class들이 서로 다른 방식으로 페이지 머리를 짜므로 우리는
+%% 여기서 각각을 따로따로 정의해 주어야 한다.
+
+\@ifclassloaded{article}{%
+  \if@twoside
+    \renewcommand\ps@headings{%
+      \let\@oddfoot\@empty\let\@evenfoot\@empty
+      \def\@evenhead{\thepage\hfil\normalfont\slshape\leftmark}%
+      \def\@oddhead{{\normalfont\slshape\rightmark}\hfil\thepage}%
+      \let\@mkboth\markboth
+      \def\sectionmark##1{%
+        \markboth {\MakeUppercase{%
+          \ifnum \c@secnumdepth >\z@
+            \pre@sectioncnt\thesection\post@sectioncnt\quad
+          \fi
+          ##1}}{}}%
+      \def\subsectionmark##1{%
+        \markright {%
+          \ifnum \c@secnumdepth >\@ne
+            \thesubsection\quad
+          \fi
+          ##1}}}
+  \else
+    \def\ps@headings{%
+      \let\@oddfoot\@empty
+      \def\@oddhead{{\normalfont\slshape\rightmark}\hfil\thepage}%
+      \let\@mkboth\markboth
+      \def\sectionmark##1{%
+        \markright {\MakeUppercase{%
+          \ifnum \c@secnumdepth >\m@ne
+            \pre@sectioncnt\thesection\post@sectioncnt\quad
+          \fi
+          ##1}}}}
+  \fi
+}{}
+
+\@ifclassloaded{book}{%
+  \if@twoside
+    \def\ps@headings{%
+      \let\@oddfoot\@empty\let\@evenfoot\@empty
+      \def\@evenhead{\thepage\hfil\normalfont\slshape\leftmark}%
+      \def\@oddhead{{\normalfont\slshape\rightmark}\hfil\thepage}%
+      \let\@mkboth\markboth
+      \def\chaptermark##1{%
+        \markboth {\MakeUppercase{%
+            \ifnum \c@secnumdepth >\m@ne
+              \if@mainmatter
+                 \pre@chaptercnt\thechapter\post@chaptercnt\quad%
+              \fi
+            \fi
+            ##1}}{}}%
+      \def\sectionmark##1{%
+        \markright {\MakeUppercase{%
+            \ifnum \c@secnumdepth >\z@
+              \pre@sectioncnt\thesection\post@sectioncnt\quad%
+            \fi
+            ##1}}}}
+  \else
+    \def\ps@headings{%
+      \let\@oddfoot\@empty
+      \def\@oddhead{{\normalfont\slshape\rightmark}\hfil\thepage}%
+      \let\@mkboth\markboth
+      \def\chaptermark##1{%
+        \markright {\MakeUppercase{%
+          \ifnum \c@secnumdepth >\m@ne
+            \if@mainmatter
+              \pre@chaptercnt\thechapter\post@chaptercnt\quad%
+            \fi
+          \fi
+          ##1}}}}
+  \fi
+  \pagestyle{headings}
+  }{}
+
+\@ifclassloaded{report}{%
+  \if@twoside
+    \def\ps@headings{%
+      \let\@oddfoot\@empty\let\@evenfoot\@empty
+      \def\@evenhead{\thepage\hfil\normalfont\slshape\leftmark}%
+      \def\@oddhead{{\normalfont\slshape\rightmark}\hfil\thepage}%
+      \let\@mkboth\markboth
+      \def\chaptermark##1{%
+        \markboth {\MakeUppercase{%
+          \ifnum \c@secnumdepth >\m@ne
+            \pre@chaptercnt\thechapter\post@chaptercnt\quad%
+          \fi
+          ##1}}{}}%
+      \def\sectionmark##1{%
+        \markright {\MakeUppercase{%
+          \ifnum \c@secnumdepth >\z@
+            \pre@sectioncnt\thesection\post@sectioncnt\quad%
+          \fi
+          ##1}}}}
+  \else
+    \def\ps@headings{%
+      \let\@oddfoot\@empty
+      \def\@oddhead{{\normalfont\slshape\rightmark}\hfil\thepage}%
+      \let\@mkboth\markboth
+      \def\chaptermark##1{%
+        \markright {\MakeUppercase{%
+          \ifnum \c@secnumdepth >\m@ne
+            \pre@chaptercnt\thechapter\post@chaptercnt\quad%
+          \fi
+          ##1}}}}
+  \fi
+}{}
+
+%% bangjom emphasis : extension. (inspired by hangul.sty)
+
+\def\circemphchar{˚}
+\def\dotemphchar{˙}
+\let\useremphchar\circemphchar
+\newdimen\raisedotdim\raisedotdim\z@
+\newdimen\dhucs@emph@width
+
+\def\put@dhucs@mphch@r#1{%
+  \ifnum\thish@ngul>\z@ %\ifnum\thish@ngul<\thr@@ % hangul or hanja
+    \rlap{\raise\dhucs@emph@raise
+      \hb@xt@\dhucs@emph@width{\normalfont\hss#1\hss}}%
+  \fi %\fi
+}
+\def\get@dhucs@mphheight#1{%
+  \ifdim\raisedotdim=\z@\relax
+    \settoheight{\dhucs@emph@raise}{#1}%
+    \addtolength{\dhucs@emph@raise}{-.4em}%
+  \else\let\dhucs@emph@raise\raisedotdim\fi
+}
+
+\protected\def\dotemph#1{\begingroup
+  \get@dhucs@mphheight{#1}%
+  \let\dhucs@emph\dhucs@dot@emph
+  #1\endgroup}
+
+\def\dhucs@dot@emph#1{%
+  \settowidth{\dhucs@emph@width}{#1}%
+  \put@dhucs@mphch@r{\dotemphchar}%
+}
+
+\protected\def\circemph#1{\begingroup
+  \get@dhucs@mphheight{#1}%
+  \let\dhucs@emph\dhucs@circ@emph
+  #1\endgroup}
+
+\def\dhucs@circ@emph#1{\leavevmode
+  \settowidth{\dhucs@emph@width}{#1}%
+  \put@dhucs@mphch@r{\circemphchar}%
+}
+
+\newdimen\useremphraisedim\useremphraisedim\z@
+
+\protected\def\useremph#1{\begingroup
+  \ifdim\useremphraisedim=\z@\relax
+     \settoheight{\dhucs@emph@raise}{#1}%
+     \addtolength{\dhucs@emph@raise}{-.4em}%
+  \else\let\dhucs@emph@raise\useremphraisedim\fi
+  \let\dhucs@emph\dhucs@user@emph
+  #1\endgroup}
+
+\def\dhucs@user@emph#1{\leavevmode
+  \settowidth{\dhucs@emph@width}{#1}%
+  \put@dhucs@mphch@r{\useremphchar}%
+}
+
+\g@addto@macro\pdfstringdefPreHook{%
+  \let\circemph\@firstofone
+  \let\useremph\@firstofone
+}
+
+%%% xspaceskip
+\@ifpackageloaded{dhucs-setspace}{}{\linespread{1.333}}
+\if@nonfrench
+ \xspaceskip=.5em plus .111em minus .1em
+\fi
+
+%%% interhchar
+\setInterHangulSkip{-0.55pt}
+
+%%% makeidx를 쓰면 \see와 \seealso가 정의된다.
+%%% modified from kosections-euc.tex
+%%% See http://www.ktug.or.kr/jsboard/read.php?table=operate&no=22789
+\AtBeginDocument{%
+  \@ifundefined{see}{}{%
+    \renewcommand*\see[2]{#1\emph{\seename}}%
+  }
+  \@ifundefined{seealso}{}{%
+    \renewcommand*\seealso[2]{#1\emph{\alsoname}}%
+  }
+}
+
+\endinput

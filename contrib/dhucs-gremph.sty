@@ -1,0 +1,106 @@
+%% File `dhucs-gremph.sty`
+%%
+%% (C) Copyright 2007-2013 Kangsoo Kim <karnes at ktug org>
+%%                         Dohyun Kim  <nomos at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+%% ------------------------------------------------------------------- 
+%% 2013/10/01. strip off untype1, \SetGremphFonts{outbt}{outgo}
+%% 2005/01/07. bfemph option
+%% 2005/04/22. Gremph Font Selection Rearranged.
+%%            \usepackage[gremphhangul=<hangulfont>,gremphhanja=<hanjafont>,bfemph]{dhucs-gremph}
+%%
+\ProvidesPackage{dhucs-gremph}
+\RequirePackage{dhucs}
+
+\RequirePackage{xkeyval}
+
+\newif\if@bfemph\@bfemphfalse
+%\DeclareOption{bfemph}{\@bfemphtrue}
+%\ProcessOptions
+\DeclareOptionX{bfemph}[]{\@bfemphtrue}
+\newif\if@gremph\@gremphtrue
+
+\newif\if@vargremphhangulfont\@vargremphhangulfontfalse
+\newif\if@vargremphhanjafont\@vargremphhanjafontfalse
+\DeclareOptionX{gremphhangul}[nanumgt]{\@vargremphhangulfonttrue\def\GrEmphFont{#1}}
+\DeclareOptionX{gremphhanja}[nanumgt]{\@vargremphhanjafonttrue\def\GrEmphHanjaFont{#1}}
+%\define@key{dhucs-gremph.sty}{gremphhangulfont}[utgr]{\@vargremphhangulfonttrue\def\GremphFont{#1}}
+%\define@key{dhucs-gremph.sty}{gremphhanjafont}[utgt]{\@vargremphhanjafonttrue\def\GrEmphHanjaFont{#1}}
+
+\ProcessOptionsX
+
+%\if@bfemph
+%	\def\GrEmphFont{utbt}
+%	\def\GrEmphHanjaFont{utbt}
+%\else
+  \if@vargremphhangulfont\else
+	\def\GrEmphFont{nanumgt}\fi
+	\if@vargremphhanjafont\else
+	\def\GrEmphHanjaFont{nanumgt}\fi
+%\fi
+%\def\SetGremphFonts#1#2{%
+%	\def\GrEmphFont{#1}%
+%	\def\GrEmphHanjaFont{#2}%
+%}
+
+\if@bfemph
+\DeclareFontFamily{LUC}{grem}{\hyphenchar \font\m@ne}
+\DeclareFontShape{LUC}{grem}{m}{n}{<-> LUC * \GrEmphFont b}{}
+\DeclareFontShape{LUC}{grem}{m}{it}{<-> LUC * \GrEmphFont b}{}
+\DeclareFontShape{LUC}{grem}{m}{sl}{<-> LUC * \GrEmphFont b}{}
+\DeclareFontFamily{LUC}{gremhj}{\hyphenchar \font\m@ne}
+\DeclareFontShape{LUC}{gremhj}{m}{n}{<-> LUC * \GrEmphHanjaFont b}{}
+\DeclareFontShape{LUC}{gremhj}{m}{it}{<-> LUC * \GrEmphHanjaFont b}{}
+\DeclareFontShape{LUC}{gremhj}{m}{sl}{<-> LUC * \GrEmphHanjaFont b}{}
+\else
+\DeclareFontFamily{LUC}{grem}{\hyphenchar \font\m@ne}
+\DeclareFontShape{LUC}{grem}{m}{n}{<-> LUC * \GrEmphFont m}{}
+\DeclareFontShape{LUC}{grem}{m}{it}{<-> LUC * \GrEmphFont m}{}
+\DeclareFontShape{LUC}{grem}{m}{sl}{<-> LUC * \GrEmphFont m}{}
+\DeclareFontFamily{LUC}{gremhj}{\hyphenchar \font\m@ne}
+\DeclareFontShape{LUC}{gremhj}{m}{n}{<-> LUC * \GrEmphHanjaFont m}{}
+\DeclareFontShape{LUC}{gremhj}{m}{it}{<-> LUC * \GrEmphHanjaFont m}{}
+\DeclareFontShape{LUC}{gremhj}{m}{sl}{<-> LUC * \GrEmphHanjaFont m}{}
+\fi
+
+\DeclareRobustCommand\itshape
+        {\not@math@alphabet\itshape\mathit
+         \fontshape\itdefault\selectfont\SetAdhocFonts{grem}{gremhj}}
+
+%\DeclareRobustCommand\slshape\itshape
+\DeclareRobustCommand\slshape
+        {\not@math@alphabet\slshape\relax
+         \fontshape\sldefault\selectfont\SetAdhocFonts{grem}{gremhj}}
+
+\DeclareRobustCommand\regremph{%
+	\@gremphtrue
+	\DeclareRobustCommand\itshape
+        {\not@math@alphabet\itshape\mathit
+         \fontshape\itdefault\selectfont\SetAdhocFonts{grem}{gremhj}}%
+%	\DeclareRobustCommand\slshape\itshape
+    \DeclareRobustCommand\slshape
+        {\not@math@alphabet\slshape\relax
+         \fontshape\sldefault\selectfont\SetAdhocFonts{grem}{gremhj}}%
+}
+
+\DeclareRobustCommand\ungremph{%
+	\@gremphfalse
+	\DeclareRobustCommand\itshape
+        {\not@math@alphabet\itshape\mathit
+         \fontshape\itdefault\selectfont}%
+    \DeclareRobustCommand\slshape
+        {\not@math@alphabet\slshape\relax
+         \fontshape\sldefault\selectfont}%
+}
+
+\endinput
+
+% end of style.

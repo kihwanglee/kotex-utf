@@ -1,0 +1,129 @@
+%% File `dhucs-interword.sty`
+%%
+%% (C) Copyright 2007-2013 Kangsoo Kim <karnes at ktug org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%  http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\ProvidesPackage{dhucs-interword}[2009/03/15]
+\RequirePackage{dhucs}
+
+\newif\if@HWP\@HWPfalse
+\DeclareOption{HWP}{\@HWPtrue\let\dhucs@interhchar\z@\HWPinterwordskip}
+\newif\if@default\@defaultfalse
+\DeclareOption{default}{\@defaulttrue\@nonfrenchtrue\DEFAULTskips}
+\newif\if@nonfrench\@nonfrenchfalse
+\DeclareOption{nonfrench}{\@nonfrenchtrue}
+\DeclareOption{wider}{\widerhangul}
+\DeclareOption{narrower}{\narrowerhangul}
+%\DeclareOption*{\DEFAULTskips}
+
+\newdimen\dimen@skip
+\dimen@skip=\f@size\p@
+
+%\let\dhucs@interhchar\setInterHangulSkip
+\newcommand\interHchar[1]{\setInterHangulSkip{#1}}
+\let\interhchar\interHchar
+
+%% finemath active
+\if@dhucsfinemath\else\@dhucsfinemathtrue\fi
+
+\newcommand\interhword[4][\@empty]{%
+    \ifx#1\@empty\setinterwordskip{#2}{#3}{#4}\else\setinterwordskip[#1]{#2}{#3}{#4}\fi
+}
+
+\def\narrowerhangul{%
+	\interHchar{-.75pt}%
+}
+\def\widerhangul{%
+	\interHchar{1pt}%
+}
+
+\def\setinterwordskip{\@ifnextchar[\setinterwordskip@\setinterwordskip@@}
+\def\setinterwordskip@[#1]#2#3#4{%
+  \spaceskip = #2\dimen@skip plus #3\dimen@skip minus #4\dimen@skip
+  \xspaceskip = #1\dimen@skip plus #3\dimen@skip minus #4\dimen@skip
+}
+\def\setinterwordskip@@#1#2#3{%
+  \spaceskip = #1\dimen@skip plus #2\dimen@skip minus #3\dimen@skip
+}
+
+\def\HWPinterwordskip{%
+  \let\dhucs@interhchar\z@
+  \if@nonfrench
+     \interhword[.6]{.475}{.111}{.111}%
+  \else
+     \interhword{.475}{.111}{.111}%
+  \fi
+}
+
+\def\DEFAULTskips{%
+%  \let\dhucs@interhchar\z@
+  \interHchar{-.5pt}%
+  \if@nonfrench
+     \interhword[.55]{.413}{.11}{.1}%
+  \else
+     \interhword{.413}{.11}{.1}%
+  \fi
+}
+
+\ProcessOptions\relax
+
+\if@default
+\AtEndOfPackage{%
+\def\ucsfninterwordhook{%
+%    \let\dhucs@interhchar\z@
+    \interHchar{-.55pt}%
+    \if@nonfrench
+       \interhword[.5]{.303}{.11}{.1}%
+    \else
+       \interhword{.303}{.11}{.1}%
+    \fi
+}}\else
+\if@HWP
+\AtEndOfPackage{%
+\def\ucsfninterwordhook{%
+    \let\dhucs@interhchar\z@
+    \if@nonfrench
+        \interhword[.55]{.331}{.133}{.1}%
+    \else
+        \interhword{.331}{.133}{.1}%
+    \fi
+}}\fi\fi
+
+\RequirePackage{verbatim}
+\renewcommand\verbatim@font{\normalfont
+                   \ttfamily\spaceskip.5em\relax
+                   \hyphenchar\font\m@ne
+                   \let\do\do@noligs
+                   \verbatim@nolig@list}
+
+% engtext env
+\@ifundefined{engtext}%
+ {%
+   \newenvironment{engtext}%
+     {\begingroup\spaceskip=\fontdimen2\font plus\fontdimen3\font minus\fontdimen4\font}%
+     {\endgroup}%
+ }{}
+
+% engtxt
+\newskip\ORIG@spaceskip
+\def\engtxt{\ORIG@spaceskip=\spaceskip
+  \spaceskip=\fontdimen2\font plus\fontdimen3\font minus\fontdimen4\font}
+\def\endengtxt{\spaceskip=\ORIG@spaceskip}
+
+\endinput
+%%
+%% End of file `dhucs-interword.sty'.
+
+%% CHANGE LOG.
+% 2005/09/22. finemath active, change default interhchar.
+% 2005/01/07. code clearance
+% 2005/05/12. add engtext env., HWP interhchar=0pt.
+% 2005/08/05. rewrite codes. introduce nonfrench option
+% 2005/11/17. \interhword bug fix.
