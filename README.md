@@ -8,7 +8,56 @@ kotex-utf is a macro package for typesetting Hangul, the native
 alphabet of the Korean language. The input Korean text should be 
 encoded in UTF-8.  kotex-utf belongs to ko.TeX, a comprehensive 
 Korean typesetting system together with packages kotex-oblivoir, 
-kotex-plain, cjk-ko, xetex-ko, luaxex-ko, and kotex-utils.
+kotex-plain, kotex-utils, cjk-ko, xetexko, and luaxexko.
+
+Files
+-----
+
+### TeXinputs
+
+    dhucs-nanumfont.sty -> tex/latex/kotex/
+    dhucs.sty -> tex/latex/kotex/
+    hfontspec.default -> tex/latex/kotex/
+    kosections-utf.sty -> tex/latex/kotex/
+    kotex.cfg -> tex/latex/kotex/
+    kotex.sty -> tex/latex/kotex/
+    kotexutf.sty -> tex/latex/kotex/
+    lucenc.dfu -> tex/latex/kotex/
+    lucuhcmj.fd -> tex/latex/kotex/
+    dhucs-cmap.sty -> tex/latex/kotex/contrib/
+    dhucs-enumerate.sty -> tex/latex/kotex/contrib/
+    dhucs-enumitem.sty -> tex/latex/kotex/contrib/
+    dhucs-gremph.sty -> tex/latex/kotex/contrib/
+    dhucs-interword.sty -> tex/latex/kotex/contrib/
+    dhucs-paralist.sty -> tex/latex/kotex/contrib/
+    dhucs-sectsty.sty -> tex/latex/kotex/contrib/
+    dhucs-setspace.sty -> tex/latex/kotex/contrib/
+    dhucs-trivcj.sty -> tex/latex/kotex/contrib/
+    dhucs-ucshyper.sty -> tex/latex/kotex/contrib/
+    dhucsfn.sty -> tex/latex/kotex/contrib/
+    kotex-logo.sty -> tex/latex/kotex/contrib/
+    kotex-varioref.sty -> tex/latex/kotex/contrib/
+
+### TeX4ht
+
+    tex4ht/dhucs.4ht -> tex/latex/kotex/tex4ht/
+    tex4ht/dhucs.cfg -> tex/latex/kotex/tex4ht/
+    tex4ht/kosections-utf.4ht -> tex/latex/kotex/tex4ht/
+
+### Documents
+
+    README (this file) -> doc/latex/kotex-utf/
+    doc/kotexdoc.pdf -> doc/latex/kotex-utf/
+    doc/kotexdoc.tex -> doc/latex/kotex-utf/
+    doc/sample-finemath-setup.tex -> doc/latex/kotex-utf/
+    doc/yettext.tex -> doc/latex/kotex-utf/
+    doc/yettext.txt -> doc/latex/kotex-utf/
+    doc/fig/allowbreak-dhucs.pdf -> doc/latex/kotex-utf/fig/
+    doc/fig/fntexp.pdf -> doc/latex/kotex-utf/fig/
+    doc/fig/fntnormal.pdf -> doc/latex/kotex-utf/fig/
+    doc/fig/histkotex.jpg -> doc/latex/kotex-utf/fig/
+    doc/fig/linebreaktest.pdf -> doc/latex/kotex-utf/fig/
+    doc/fig/testdhucsallowbreak.pdf -> doc/latex/kotex-utf/fig/
 
 Usage
 -----
