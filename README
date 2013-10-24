@@ -10,6 +10,14 @@ encoded in UTF-8.  kotex-utf belongs to ko.TeX, a comprehensive
 Korean typesetting system together with packages kotex-oblivoir, 
 kotex-plain, kotex-utils, cjk-ko, xetexko, and luaxexko.
 
+Dependencies
+------------
+
+kotex-utf depends on the following packages:
+
+* xetexko: Hangul and hanja mapping tables
+* cjk-ko: Korean counters and captions
+
 Files
 -----
 
@@ -24,19 +32,19 @@ Files
     kotexutf.sty -> tex/latex/kotex/
     lucenc.dfu -> tex/latex/kotex/
     lucuhcmj.fd -> tex/latex/kotex/
-    dhucs-cmap.sty -> tex/latex/kotex/contrib/
-    dhucs-enumerate.sty -> tex/latex/kotex/contrib/
-    dhucs-enumitem.sty -> tex/latex/kotex/contrib/
-    dhucs-gremph.sty -> tex/latex/kotex/contrib/
-    dhucs-interword.sty -> tex/latex/kotex/contrib/
-    dhucs-paralist.sty -> tex/latex/kotex/contrib/
-    dhucs-sectsty.sty -> tex/latex/kotex/contrib/
-    dhucs-setspace.sty -> tex/latex/kotex/contrib/
-    dhucs-trivcj.sty -> tex/latex/kotex/contrib/
-    dhucs-ucshyper.sty -> tex/latex/kotex/contrib/
-    dhucsfn.sty -> tex/latex/kotex/contrib/
-    kotex-logo.sty -> tex/latex/kotex/contrib/
-    kotex-varioref.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-cmap.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-enumerate.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-enumitem.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-gremph.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-interword.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-paralist.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-sectsty.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-setspace.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-trivcj.sty -> tex/latex/kotex/contrib/
+    contrib/dhucs-ucshyper.sty -> tex/latex/kotex/contrib/
+    contrib/dhucsfn.sty -> tex/latex/kotex/contrib/
+    contrib/kotex-logo.sty -> tex/latex/kotex/contrib/
+    contrib/kotex-varioref.sty -> tex/latex/kotex/contrib/
 
 ### TeX4ht
 
