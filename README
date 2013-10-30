@@ -16,7 +16,7 @@ Dependencies
 kotex-utf depends on the following packages:
 
 * xetexko: Hangul and hanja mapping tables
-* cjk-ko: Korean counters and captions
+* cjk-ko: main style, Korean counters and captions
 
 Files
 -----
@@ -28,7 +28,6 @@ Files
     hfontspec.default -> tex/latex/kotex/
     kosections-utf.sty -> tex/latex/kotex/
     kotex.cfg -> tex/latex/kotex/
-    kotex.sty -> tex/latex/kotex/
     kotexutf.sty -> tex/latex/kotex/
     lucenc.dfu -> tex/latex/kotex/
     lucuhcmj.fd -> tex/latex/kotex/
@@ -70,10 +69,12 @@ Files
 Usage
 -----
 
-Call kotex.sty with package options as follows:
+Call `kotex.sty` (in cjk-ko package) with package options as follows:
 
     \usepackage[<options>]{kotex}
 
+When kotex-utf is installed and appropriate options are given,
+kotex-utf will be used for Hangul typesetting.
 Certain package options are inter-related to the TeX engines
 that are used for compilation.
 For pdfLaTeX and LaTeX, you can use *utf* option:
