@@ -1,0 +1,155 @@
+2013-11-08  Kihwang Lee  <leekh at ktug org>
+
+	Version 2.0.1
+
+	* ChangeLog: newly added
+
+2013-11-07  Kangsoo Kim  <karnes at ktug org>
+
+	No version change
+	
+	* kotexdoc.tex: revised for new Xindy related matters
+
+2013-10-24  Kihwang Lee  <leekh at ktug org>
+
+	No version change
+	
+	* Uploaded to CTAN
+
+2013-10-22  Kangsoo Kim  <karnes at ktug org>
+
+	* kotexutf.sty: use cjk-ko's ko-names, ko-sections, and ko-labels
+
+2013-10-21  Kihwang Lee  <leekh at ktug org>
+
+	Version 2.0.0
+	
+	* kotex-utf packaging, uploaded to https://github.com/kihwanglee/kotex-utf
+
+2013-10-21  Kangsoo Kim  <karnes at ktug org>
+
+	* kotexutf.sty: use xetexko's tab files
+
+2013-10-01  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs-gremph.sty: strip off untype1, \SetGremphFonts{outbt}{outgo}
+
+2009-03-05  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 5.0.0
+	wrapper for various engines
+
+2008-08-28  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.1.4
+	work around error under using babel package
+
+2008-05-26  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.1.3
+	fallback of hangul font family is now serif font
+
+2008-03-15  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.1.2
+	redefine hyphendemerits only under finemath
+
+2008-01-30  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.1.1
+	fix a bug of heading mark
+
+2008-01-29  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.1.0
+	write raw chars in aux, toc, idx ...
+
+2007-12-28  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.14
+	compatible with footmisc.sty (reported by 서상현)
+
+2007-12-01  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.13
+	spacefactor=1000 between hangul and `)'
+
+2007-10-30  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.12
+	fix on \dhucs@next == \ifx
+
+2007-10-29  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.11
+	nobreak after \nobreak in \cjksymbolskip
+
+2007-10-25  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.10
+	simplify code related to \dhucs@next
+
+2007-10-07  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.9
+	bug fix related to \dhucs@next == \fi
+
+2007-07-18  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.8
+	part of ko.TeX
+	PUA is now hangul class 2 (= hanja)
+
+2007-06-30  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.7
+	skip instead of kern after cjksymbol
+
+2007-06-26  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.6
+	option strictcharcheck introduced
+	* dhucs.sty: version 4.0.5
+	redefine U+2018, U+2019, U+201C, U+201D
+
+2007-06-25  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.4
+	fix bugs introduced by previous minor upgrade
+
+2007-06-22  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.3
+	lowering multiple punctuations
+
+2007-06-16  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs.sty: version 4.0.2
+	support ulem.sty
+
+2005-11-17  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs-interword.sty: \interhword bug fix.
+
+2005-09-22  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs-interword.sty: finemath active, change default interhchar.
+
+2005-08-05  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs-interword.sty: rewrite codes. introduce nonfrench option
+
+2005-05-12  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs-interword.sty: add engtext env., HWP interhchar=0pt.
+
+2005-04-22  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs-gremph.sty: Gremph Font Selection Rearranged.
+	\usepackage[gremphhangul=<hangulfont>,gremphhanja=<hanjafont>,bfemph]{dhucs-gremph}
+
+2005-01-07  Kangsoo Kim  <karnes at ktug org>
+
+	* dhucs-gremph.sty: bfemph option
+	* dhucs-interword.sty: code clearance
+
