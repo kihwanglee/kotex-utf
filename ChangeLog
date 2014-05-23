@@ -1,3 +1,10 @@
+2014-05-12  Kangsoo Kim  <karnes at ktug org>
+
+	Version 2.0.2
+
+	* kotexdoc.tex: improved the description on ksnamedef, and added footnotes
+	for using \XeTeX and \LuaTeX
+
 2013-11-08  Kihwang Lee  <leekh at ktug org>
 
 	Version 2.0.1

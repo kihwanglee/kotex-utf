@@ -1,13 +1,14 @@
 %!TEX encoding = UTF-8 Unicode
 %!TEX program = arara
-% arara: pdflatex: {options: -synctex=1}
-% arara: komkindex
-% arara: pdflatex: {options: -synctex=1}
+% arara: pdflatex: {synctex: yes}
+% arara: komkindex: {style: kotex}
+% arara: pdflatex: {synctex: yes}
 %%% file `kotexdoc.tex`
 %% Written by Kangsoo Kim <karnes at ktug kr>
 %%
 %%  2013/09/30
 %%  2013/11/07
+%%  2014/03/01, \ksnamedef
 %%
 %% part of ko.TeX v2.0
 %% LPPL, maintained.
@@ -66,7 +67,8 @@
 \def\ko{\textsf{k}\textit{o}}
 \def\kotexplain{\kotex-\hologo{plain}}
 \newcommand\kotexversion{v2.0}
-\newcommand\kotexdate{2013년 11월}
+%\newcommand\kotexdate{2013년 11월}
+\newcommand\kotexdate{2014년 5월}
 
 %\usepackage[
 %    backend=biber,
@@ -435,31 +437,34 @@ EUC-KR 버전에도 적용시킴으로써, 폰트를 둘러싼 이런저런 불�
 
 \section{pdf 문서 작성을 위한 설정}\label{sec:makepdf}
 
-\subsection{Legacy \TeX}
+\subsection{pdf bookmark}
 
-\paragraph{pdf bookmark}
+%\paragraph{pdf bookmark}
 
 \pkg{hyperref}에
-\option{unicode} 옵션을 지정하는 것으로 pdf bookmark 문제가
-모두 해결된다.
+\option{pdfencoding = auto} 옵션을 지정하는 것으로 pdf bookmark 문제가
+모두 해결된다.\footnote{%
+	과거 \XeTeX 을 사용할 때는 \option{unicode} 옵션을 선언하지
+	않고 \LuaTeX 이나 \pdfTeX 에서는 \option{unicode}를 선언하도록
+	권장했다. 이 방법은 여전히 유효하나 \option{pdfencoding=auto}를
+	쓰면 엔진에 따라 옵션을 달리 주어야 할 필요가 없다.}
 \begin{verbatim}
 \usepackage{kotex}
-\usepackage{ifpdf}
-\usepackage{pdftex,unicode,bookmarks]{hyperref}
+\usepackage{pdfencoding=auto,bookmarks]{hyperref}
 \end{verbatim}
-여기서는 \option{unicode} 옵션이 반드시 지정되어야 한다.
-\option{pdftex}은 컴파일 상황에 따라 \option{dvipdfmx}
-또는 \option{dvips}를
-지정할 수 있다.
+%여기서는 \option{unicode} 옵션이 반드시 지정되어야 한다.
+%\option{pdftex}은 컴파일 상황에 따라 \option{dvipdfmx}
+%또는 \option{dvips}를
+%지정할 수 있다.
+%
+%위의 예에 상당하는 컴파일 절차 예시는 다음과 같다.
+%\begin{verbatim}
+%$ (pdf)latex foo
+%$ (pdf)latex foo
+%$ (dvipdfmx foo)
+%\end{verbatim}
 
-위의 예에 상당하는 컴파일 절차 예시는 다음과 같다.
-\begin{verbatim}
-$ (pdf)latex foo
-$ (pdf)latex foo
-$ (dvipdfmx foo)
-\end{verbatim}
-
-\paragraph{텍스트 검색과 추출}
+\subsection{텍스트 검색과 추출}
 pdf 문서의 텍스트 검색과 추출은 매우 중요한 문제이다.
 이것은 어떤 드라이버로 pdf를 생성하느냐에 따라 조금 달라지는데, 일괄
 요약하면 다음과 같다.
@@ -487,16 +492,17 @@ pdf 북마크가 잘 만들어지며 한글 텍스트의 검색과 추출이 자
 \paragraph{oblivoir}
 \pkg{oblivoir}는 위의 절차를 모두 자동화해두었다.
 
-\subsection{\LuaTeX, \XeTeX}
-
-이 엔진을 사용하는 경우, 기본 output이 pdf 포맷이다.
-pdf bookmark의 경우만이 문제가 되는데, \pkg{hyperref}을 사용할 때
-\begin{itemize}
-\item \XeTeX: \option{unicode}를 지정하지 않는다.
-\item \LuaTeX: \option{unicode}를 지정한다.
-\end{itemize}
-는 사실만을 기억하면 될 것이다.
-물론 \pkg{oblivoir}라면 이 모두가 자동화되어 있다.
+%\subsection{\LuaTeX, \XeTeX}
+%
+%이 엔진을 사용하는 경우, 기본 output이 pdf 포맷이다.
+%pdf bookmark의 경우만이 문제가 되는데, \pkg{hyperref}을 사용할 때
+%\begin{verbatim}
+%pdfencoding = auto
+%\end{verbatim}
+%옵션을 쓰면 \pdfTeX, \XeTeX, \LuaTeX 을 불문하고 책갈피에서 한글이 깨지지 않게 해준다.
+%
+%과거에는 \XeTeX\ 사용시에 \option{unicode} 옵션을 주지 않아야 하는 데 
+%주의해야 했으나 위와 같이 하면 자동적으로 처리된다.
 
 \chapter{문서와 도움말}\label{chap:docu}
 
@@ -528,14 +534,14 @@ pdf bookmark의 경우만이 문제가 되는데, \pkg{hyperref}을 사용할 �
 
 \chapter{배포와 설치}
 
-\section{배포 방식}
-현재 \kotex 의 배포 방식은 크게 두 가지로 구분되어 있다.
-\begin{enumerate}[(1)]
-\item \wi{CTAN}\footnote{\url{http://ctan.tug.org}}에 등재
-\item \kotex\ 사설 저장소\footnote{\url{http://ftp.ktug.org/KTUG/texlive}}를 통하여 배포
-\end{enumerate}
+\section{CTAN을 통한 배포}
+%현재 \kotex 은 
+%\begin{enumerate}[(1)]
+%\item \wi{CTAN}\footnote{\url{http://ctan.tug.org}}에 등재
+%\item \kotex\ 사설 저장소\footnote{\url{http://ftp.ktug.org/KTUG/texlive}}를 통하여 배포
+%\end{enumerate}
 
-2013년 11월 현재, \kotex\ 패키지군은 거의 모두
+2014년 5월 현재, \kotex\ 패키지군은 거의 모두
 CTAN에 등재되었다. CTAN을 통해 배포되는 패키지는 다음과 같다:
 \begin{quote}
 \pkg{kotex-utf}, \pkg{xetex-ko}, \pkg{luatex-ko},
@@ -561,34 +567,28 @@ CTAN을 통해 배포된다.
 %이곳에서 배포된다.\footnote{%
 %	멀지 않은 장래에 \pkg{dhucs}, 즉 \kotex-utf도 CTAN을 통하여 배포될 전망이다.}
 
-현재 사설 저장소에서 서비스되는 패키지는 \pkg{kotex-base}, \pkg{kotex-extra}, \pkg{jiwonlipsum}, \pkg{kotex-midkor}, \pkg{kotex-euc}인데 필수적인 패키지는 모두 CTAN으로 올라갔고 \kotex 의 기능을
-확장하는 보충적인 패키지들이 사설 저장소를 통하여 제공되고 있다.
+CTAN에 등재된 패키지들은 각 배포판의 패키지로서 배포된다.
+\begin{description}
+\item [\TeX\,Live] 위에 언급된 모든 패키지가 포함되어 있다.
+\item [MiK\TeX] \pkg{kotex-utils}를 제외한 패키지가 포함되어 있다.
+\end{description}
 
-CTAN에 등재된 패키지들은 \TeX\,Live, MiK\TeX\ 등의 텍 배포판에
-포함될 수 있다. 따라서 \TeX\,Live를 설치한 경우 별도의 추가 작업 없이도
-\kotex\ 관련 패키지를 설치 운영할 수 있게 되는 것이다.
+\TeX\,Live는 한글 관련 패키지와 유틸리티, 문서를 \pkg{collection-langkorean}이라는 콜렉션 패키지로 묶어서 배포한다.
 
-\section{\kotex\ 사설 저장소의 이용 방법}
+\section{KTUG 사설 저장소}
 
-\kotex\ 사설 저장소는\index{ko.TeX repository} \TeX\,Live의 \util{tlmgr} 유틸리티를 통하여
-간단히 등록하고 관리할 수 있다.
-먼저 다음 명령을 내리면 저장소가 등록된다.
-\begin{verbatim}
-$ tlmgr repository add http://ftp.ktug.org/KTUG/texlive/2013 kotex
-\end{verbatim}
-이제 이 저장소를 이용하기 위하여 \TeX\,Live의 texmf 트리 아래의 \file{tlpkg} 디렉터리에
-\begin{boxedverbatim}
-kotex:*
-\end{boxedverbatim}
-이라는 내용을 갖는 \file{pinning.txt} 파일을 만들고
-\begin{verbatim}
-$ tlmgr install collection-kotex
-\end{verbatim}
-명령을 통하여 \kotex\ 패키지를 설치할 수 있다. 
+과거 \kotex 이 CTAN에 등재되기 전에 KTUG은 \kotex\ 사설 저장소를 운영하여 \TeX\,Live에서의 설치를 지원하였다(2008--2013).
 
-\bigskip
+현재 사설 저장소는 CTAN에 등재하면서 제외된 \kotex-euc 파트와 은 글꼴(트루타입, type1) 및 KTUG에서 제작된 유용한 패키지와 유틸리티들을 추가적으로 서비스하는 목적으로 운영되고 있다. 
+%에서 서비스되는 패키지는 \pkg{kotex-base}, \pkg{kotex-extra}, \pkg{jiwonlipsum}, \pkg{kotex-midkor}, \pkg{kotex-euc}인데 필수적인 패키지는 모두 CTAN으로 올라갔고 \kotex 의 기능을
+%확장하는 보충적인 패키지들이 사설 저장소를 통하여 제공되고 있다.
 
-사설 저장소는 파일들을 몇 가지 ``설치용'' 패키지로 나누어서 제공한다.\footnote{%
+%CTAN에 등재된 패키지들은 \TeX\,Live, MiK\TeX\ 등의 텍 배포판에
+%포함될 수 있다. 따라서 \TeX\,Live를 설치한 경우 별도의 추가 작업 없이도
+%\kotex\ 관련 패키지를 설치 운영할 수 있게 되는 것이다.
+
+사설 저장소는 파일들을 몇 가지 ``설치용'' 패키지로 나누어서 제공한다.
+2014년 5월 현재 사설 저장소를 통하여 설치할 수 있는 것은 다음과 같다.\footnote{%
 	여기서 `패키지'란 \LaTeX\ 매크로 패키지를 가리키는 것이 아니라
 	저장소에서 파일을 구분하는 단위를 말한다.}
 \begin{description} \tightlist
@@ -598,29 +598,61 @@ $ tlmgr install collection-kotex
 %\item [\texttt{kotex}] \pkg{dhucs} 관련 파일의 묶음이다.
 %\item [\texttt{kotex-dev}] \pkg{oblivoir} 관련 파일 묶음이다.
 %\item [\texttt{kotex-utils}] \kotex 이 제공하는 유틸리티 프로그램과 스타일 패키지를 포함한다.
+\item [\texttt{kotex-euc}] 이전 버전 \kotex 의 euc-kr 한글 식자 관련 파트이다. 이 패키지를 사용하려면 \pkg{unfonts-base}가 필요하다.
+\item [\texttt{unfonts-base}] 은글꼴 type 1과 트루타입이다. 
+%kotex-base라는 이름은 종래 은글꼴이 \kotex 의 기본 글꼴이었던 데서 연유한다. 이 명칭은 지금 형편에 맞지 않으므로 추후 개명될 전망이다. 
+은바탕, 은돋움, 은그래픽, 은타자 글꼴이 포함되어 있다.
+\item [\texttt{unfonts-extra}] 은글꼴 type 1과 트루타입으로 base에 포함되지 않은 것들이다.
+\item [\texttt{nanumbaruntype1}] 나눔바른고딕의 type 1 글꼴이다.
 \item [\texttt{kotex-midkor}] 옛한글 식자에 필요한 패키지와 폰트 묶음이다.
-\item [\texttt{kotex-base}] 은글꼴 type 1과 트루타입이다. kotex-base라는 이름은 종래 은글꼴이 \kotex 의 기본 글꼴이었던 데서 연유한다. 이 명칭은 지금 형편에 맞지 않으므로 추후 개명될 전망이다. 은바탕, 은돋움, 은그래픽, 은타자 글꼴이 포함되어 있다.
-\item [\texttt{kotex-extra}] 은글꼴 type 1과 트루타입으로 base에 포함되지 않은 것들이다.
 \item [\texttt{jiwonlipsum}] lipsum의 한글화 버전이다. 
-\item [\texttt{kotex-euc}] 이전 버전 \kotex 의 euc-kr 한글 식자 관련 파트이다. 이 패키지를 사용하려면 \pkg{kotex-base}가 필요하다.
+\item [\texttt{kswrapfig}] Karnes가 작성한 패키지로서 그림 주변으로 텍스트가 흐르게 할 때 그림과 텍스트 간의 위치와 간격을 조절하는 명령을 제공한다.
+\item [\texttt{ob-chapstyles}] oblivoir 클래스에서 사용하는 장 표제의 예제를 포함하고 있다. 
+\item [\texttt{hanjacnt}] 한자와 한글 카운터를 제공한다.
+\item [\texttt{arara-rules-ko}] komkindex, kotexindy, dvipdfmx를 위한 arara rules 파일.
+\item [\texttt{ktugbin}] \kotex\,Live에서 제공하던 유틸리티 몇 개를 설치한다. (Windows)
+\item [\texttt{texworks-config}] \kotex\,Live에서 제공하던 \TeX works 설정 파일. (Windows)
 \end{description}
 
-%다음 설치 패키지들도 함께 제공한다.
-%\begin{description} \tightlist
-%\item [\texttt{kotex-euc}] \pkg{kotex-euc}와 \pkg{kotexguide} 등 이전 버전에
-%포함되어 있던 파트를 서비스한다.
-%\item [\texttt{kotex-base}] \pkg{untype1}이다. 이름이 kotex-base로 되어 있는 것은
-%예전 버전에서 은글꼴 type 1이 기본 글꼴이었던 데서 유래한다. 이 명칭은 지금 형편에 맞지 않으므로
-%추후 개명될 전망이다.
-%은바탕, 은돋움, 은그래픽, 은타자 글꼴이 포함된다.
-%\item [\texttt{kotex-extra}] \pkg{untype1}의 extra 부분이다. 
-%\end{description}
-
-이들 각각을 자신의 \TeX\,Live 시스템에 설치하려면
+\kotex\ 사설 저장소는\index{ko.TeX repository} \TeX\,Live의 \util{tlmgr} 유틸리티를 통하여
+간단히 등록하고 관리할 수 있다.
+먼저 다음 명령을 내리면 저장소가 등록된다.
 \begin{verbatim}
-$ tlmgr install kotex-midkor
+$ tlmgr repository add http://ftp.ktug.org/KTUG/texlive/tlnet/ ktug
 \end{verbatim}
-와 같은 방식의 명령을 내리면 된다.
+이제 이 저장소를 이용하기 위하여 \TeX\,Live의 texmf 트리 아래의 \file{tlpkg} 디렉터리(이를테면 \texttt{/usr/local/texlive/texmf-local/tlpkg})에
+\begin{boxedverbatim}
+ktug:*
+\end{boxedverbatim}
+이라는 내용을 갖는 \file{pinning.txt} 파일을 만들고
+\begin{verbatim}
+$ tlmgr install unfonts-base
+$ tlmgr remove unfonts-base
+\end{verbatim}
+명령을 통하여 필요한 패키지를 설치하거나 제거할 수 있다. 
+
+이 문서를 오류없이 컴파일하기 위해서는 KTUG 사설 저장소로부터 \pkg{kotex-midkor} 패키지를 설치하여야 한다.
+
+%%
+%%\bigskip
+%%
+%%
+%%%다음 설치 패키지들도 함께 제공한다.
+%%%\begin{description} \tightlist
+%%%\item [\texttt{kotex-euc}] \pkg{kotex-euc}와 \pkg{kotexguide} 등 이전 버전에
+%%%포함되어 있던 파트를 서비스한다.
+%%%\item [\texttt{kotex-base}] \pkg{untype1}이다. 이름이 kotex-base로 되어 있는 것은
+%%%예전 버전에서 은글꼴 type 1이 기본 글꼴이었던 데서 유래한다. 이 명칭은 지금 형편에 맞지 않으므로
+%%%추후 개명될 전망이다.
+%%%은바탕, 은돋움, 은그래픽, 은타자 글꼴이 포함된다.
+%%%\item [\texttt{kotex-extra}] \pkg{untype1}의 extra 부분이다. 
+%%%\end{description}
+%%
+%%이들 각각을 자신의 \TeX\,Live 시스템에 설치하려면
+%%\begin{verbatim}
+%%$ tlmgr install kotex-midkor
+%%\end{verbatim}
+%%와 같은 방식의 명령을 내리면 된다.
 
 \section{\kotex\,Live}\index{ko.TeX Live}
 
@@ -641,7 +673,7 @@ $ tlmgr install kotex-midkor
 MiK\TeX 의 패키지매니저를 이용하여 설치 운용할 수 있다.\index{MiKTeX}
 
 \util{tlmgr}이 없는 텍 배포판이라도 \TeX\,Live를 바탕으로 하고 있다면 마찬가지로 \kotex 을  운용하는 것이
-가능할 것이다. 적어도 \file{collection-langcjk}라는 콜렉션 패키지를 설치하면 된다.
+가능할 것이다. 적어도 \file{collection-langkorean}라는 콜렉션 패키지를 설치하면 된다.
 
 그 이외의 경우에는 앞서 언급한 \kotex\ 패키지 저장소를 직접 방문하여 자신의 시스템에
 설치할 수 있다. 이 문제에 대해서 이 글에서는 더 다루지 않겠다.
@@ -668,7 +700,7 @@ MiK\TeX 의 패키지매니저를 이용하여 설치 운용할 수 있다.\inde
 
 \usepackage{ifpdf}
 \ifpdf
-  \usepackage[unicode,pdftex,colorlinks]{hyperref}
+  \usepackage[pdfencoding=auto,pdftex,colorlinks]{hyperref}
   \input glyphtounicode \pdfgentounicode=1
 \else
   \usepackage[unicode,dvipdfmx,colorlinks]{hyperref}
@@ -834,7 +866,9 @@ $ dvipdfmx firsttest
 기호 문자의 직접 입력과 처리가 가능하기는 하지만, 적어도 legacy \TeX 으로 작업한다면
 이 기호 문자를 문서에서 바로 입력하여 사용하는 것을 권장하지 않는다.
 기호 문자를 써야 할 경우에는 알맞은 \LaTeX 의 기호 문자 명령으로
-얻도록 하는 편이 낫다.
+얻도록 하는 편이 낫다.\footnote{%
+	단, 유니코드 텍 엔진(\XeTeX, \LuaTeX)을 사용하는 경우에는
+	유니코드 문자 자체를 입력하는 쪽이 바람직한 경우도 있다.}
 
 \subsection{우리말 이름}
 \label{sec:names}\index{우리말 이름}
@@ -847,15 +881,16 @@ $ dvipdfmx firsttest
 행간을 한글에 알맞게 설정한다. 
 또한, \wi{장절 명령}과 관련해서 %\kotex/euc와 동일한 
 \cmd{\kscntformat} 명령이 작동한다.
-\wi{한글 이름}과 관련해서 \cmd{\ksnamedef} 명령도 작동한다.
+% <!-- 2014/03/01, ksnamedef -->
+%\wi{한글 이름}과 관련해서 \cmd{\ksnamedef} 명령도 작동한다.
 %이 명령의 의미와 사용법에 대해서는 \pageref{sec:names} 페이지의
 %\ref{sec:names}절을 보라.
 
 %\pageref{tab:names} 페이지 표 \ref{tab:names}\를 참고하라. 
 
-한글 문서에서 사용되는 각종 이름들을 일률적으로
-\cmd{\ksnamedef} 매크로에 의해 변경될 수 있도록
-하였다.
+%한글 문서에서 사용되는 각종 이름들을 일률적으로
+%\cmd{\ksnamedef} 매크로에 의해 변경될 수 있도록
+%하였다.
 이러한 ``한글 이름''을 사용하려면 \option{hangul} 옵션을
 지정하여야 한다.
 
@@ -863,7 +898,7 @@ $ dvipdfmx firsttest
 사용되는 `\refname{}'의 이름 `Reference'는 \cmd{\refname}에 지정되어
 있다.  이를 우리말화 하는 방법은 다음과 같다.
 \begin{verbatim}
-  \ksnamedef{refname}{참고~문헌}
+   \renewcommand{\refname}{참고~문헌}
 \end{verbatim}
 
 %\texttt{[hangul]} 옵션을 준 경우 이 명령을 사용할 수 있다.
@@ -871,7 +906,8 @@ $ dvipdfmx firsttest
 표~\ref{tab:names}에는 한글 라텍에서 한글화한 ``라텍 이름의 한글 및
 한자화''가 나열되어 있다.  이 한글화는 \wi{전처리부}(preamble)에서 
 위에 예를 든 것처럼
-\cmd{\ksnamedef}로 재정의하면 원하는대로 변경된다.
+%\cmd{\ksnamedef}로 
+재정의하면 원하는대로 변경된다.
 
 \begin{table}[htbp]
   \leavevmode
@@ -905,11 +941,20 @@ $ dvipdfmx firsttest
   \label{tab:names}
 \end{table}
 
+%\marginpar{New 2014/03/01}
+종래 H\LaTeX 과 \kotex-utf에서 제공하던 \cmd{\ksnamedef} 명령은 이를 더이상
+사용하지 않는다. 만약 이전에 작성한 문서에서 호환성 충돌이 발생하면 다음과 같이 정의하여 이를 피해갈 수 있다.
+\begin{verbatim}
+   \newcommand\ksnamedef[2]{\expandafter\def\csname #1\endcsname{#2}}
+\end{verbatim}
 
 \subsection{장절명령}
 article 문서에서 한글 서식을 사용하면서 장절 표제의 ``제 1 절''과 같은 양식을 
 쓰지 않으려면 다음과 같이 설정하는 것이 일반적이다. 이 매크로는 \thispkg 에
-\texttt{[hangul]} 옵션을 지정한 경우에만 쓸 수 있다.
+\texttt{[hangul]} 옵션을 지정한 경우에만 쓸 수 있다.\footnote{%
+	\cmd{\kscntformat} 명령은 \pkg{kotex-utf}에만 있는 명령이다.
+	\XeTeX-\ko, \LuaTeX-\ko에서는 이 명령을 제공하지 않는다. 다만
+	\pkg{oblivoir}에서는 (section 이하 수준의 장절명령에 대하여) 이 명령을 쓸 수 있다. \pkg{titlesec}이나 \pkg{sectsty} 패키지를 이용하여 간단히 바꾸는 것이 가능하기 때문이다.}
 \begin{verbatim}
 \kscntformat{section}{}{}
 \end{verbatim}
@@ -923,7 +968,7 @@ article 문서에서 한글 서식을 사용하면서 장절 표제의 ``제 1 �
 같이 지정한다.
 \begin{verbatim}
   \renewcommand{\thechapter}{\Hnum{chapter}}
-  \ksnamedef{chaptername}{마당}
+  \renewcommand{\chaptername}{마당}
   \kscntformat{chapter}{}{~\chaptername}
 \end{verbatim}
 
@@ -953,8 +998,9 @@ article 문서에서 한글 서식을 사용하면서 장절 표제의 ``제 1 �
 설령 구현된다 하더라도 강조의 의미는 별로 드러나지 않는
 장식적인 문자꼴이 되어버리고 만다. 
 \kotex-utf는 H\LaTeX\ 이래의 전통을 감안하여 \emph{기울인 글자체} 강조
-방식을 기본값으로 채택하고 있다. 
-
+방식을 기본값으로 채택하고 있다.\footnote{%
+	\pkg{xetex-ko}나 \pkg{luatex-ko}에서는 기울인 글자체를 이탤릭에 대응하여 쓰기 위해서 \texttt{ItalicFont, ItalicFeatures} 폰트 속성을 부여하여야 한다. 자세한 것은 \pkg{xetex-ko}의 문서를 참고하라.}
+	
 \regremph
 
 \subsubsection{\protect\emph{글꼴 변경} 강조}\index{강조!글꼴 변경}
@@ -1041,6 +1087,11 @@ article 문서에서 한글 서식을 사용하면서 장절 표제의 ``제 1 �
 과 같이 하여야 한다. 
 
 \subsection{자간, 행간}
+
+자간, 행간, 어간과 같은 기본적인 타이포그래피 속성을 구현하기 위하여
+\pkg{kotex-utf}는 \pkg{dhucs-interword}와 같은 부수적인 패키지를 필요로 한다. 
+그러나 \pkg{xetex-ko}, \pkg{luatex-ko} 상황에서 이들은 모두 ``폰트 속성''으로 취급된다. 따라서 이 문제에 대하여 Legacy \TeX 과 새로운 텍 엔진 사이에 
+호환성이 없음에 유념하여야 한다. 이 글에서는 \pkg{kotex-utf}에 관한 사항만을 다루고 있다.
 
 \paragraph{자간}
 
@@ -1203,10 +1254,8 @@ doublespacing, 즉 2배간을 얻으려 한다면 \cmd{\setstretch} 값을 (한�
 이 역시 폰트 관련 문제에 해당하며, 원한다면 이른바 ``좁은 장평''이나
 ``넓은 장평''을 \dotemph{사용자가 만들어내어서} 사용하는 것이
 불가능하지는 않다. 그러나 전통적인 \TeX\ Font 사용법을 그대로
-써야하는 Legacy \TeX 에서는 쉬운 일이 아닐 뿐더러 권장하지도 않는다.
-
-장평과 같은 폰트 속성을 자유롭게 제어하고자 한다면 \XeTeX 과 같은
-엔진을 이용하는 편이 훨씬 빠르고 편리하다.
+써야하는 Legacy \TeX 에서는 쉬운 일이 아닐 뿐더러 권장하지도 않는다.\footnote{%
+장평을 폰트 속성으로 제어하는 \XeTeX\ 엔진을 이용하는 편이 훨씬 빠르고 편리하다.}
 %다만 미세 타이포그래피를
 %위하여 아주 미세한 장평의 조절을 \pdfTeX 이 행하는 경우가 있는데
 %이것은 \texttt{c-series}를 선택하는 것과는 다른 문제이다. 
@@ -1477,7 +1526,11 @@ hangpar, varhangpar
 \thispkg의 가장 큰 특징 중 하나는 한글 문서 전반에
 걸쳐 미세 조정을 적용하여, \wi{미세 타이포그래피}를 부분적으로 구현하려
 하였다는 것이다. 이 기능은 \verb|[finemath]| 옵션에 의하여 모두
-활성화된다.
+활성화된다.\footnote{%
+	\option{finemath}는 \pkg{kotex-utf}의 기능이다.
+	반면 \pkg{xetex-ko}에서는 이를 ``미세 간격'' 명령으로 구현하고
+	있어 동일한 결과를 얻을 수 있는 방법이 마련되어 있다.
+}
 
 \subsection{수식과의 간격}\index{미세 타이포그래피!수식 간격}\label{sec:finemath}
 
@@ -1806,12 +1859,12 @@ hyperref 설정은 다음 세 가지 방법으로 이루어진다.
 pdf 문서 제작에 있어서 한글 책갈피(bookmark)가 필요하면,
 다음과 같이 한다.
 \begin{verbatim}
-\usepackage[unicode,<driver>,...]{hyperref}
+\usepackage[pdfencoding=auto,<driver>,...]{hyperref}
 \end{verbatim}
 \pkg{hyperref}의 개선이 이루어짐에 따라, 한글 책갈피를 만들기 위해
-별도의 복잡한 조치를 취할 필요가 없게 되었다. 다만, \verb|<driver>|를
+별도의 복잡한 조치를 취할 필요가 없게 되었다. 다만, 컴파일 루트에 따라서 \verb|<driver>|를
 명시해주어야 한다는 데 주의하면 된다. \verb|pdftex|, \verb|dvipdfm|,
-\verb|dvips| 등을 지정한다.
+\verb|dvips| 등을 지정한다.\footnote{\XeTeX, \LuaTeX에서는 \texttt{<driver>}를 별도로 명시할 필요가 없다.}
 
 \section{찾아보기와 참고문헌}
 
@@ -1935,7 +1988,9 @@ pdf 문서 제작에 있어서 한글 책갈피(bookmark)가 필요하면,
 굴림체에 비해 그다지 예쁘지 않다.
 
 일반적인 의미에서 본격적인 옛한글 문서를 작성하려 한다면
-\pdfLaTeX\ 기반의 \kotex-utf보다는 \XeTeX-\ko가 더욱 적절할 것이다.
+\kotex-utf보다는 \XeTeX-\ko가 더욱 적절하다.
+이 새로운 엔진을 기반으로 한 \kotex\ 패키지들은 옛한글에 대한 거의
+모든 문제를 완벽하게 해결해두고 있다.
 
 \section{일본어와 중국어 문단}\index{일본어 문단}
 
@@ -1943,7 +1998,10 @@ pdf 문서 제작에 있어서 한글 책갈피(bookmark)가 필요하면,
 이것은 한글 문서에서 약간의 \wi{일본어} 또는 \wi{중국어} 인용문을 처리하게 하려는
 목적으로 제작된 것으로서 본격적인 \wi{다국어 문서}를 처리하는 데는 아직
 미흡하지만 크지 않은 규모의 일본어 중국어 문단은 나쁘지 않은 정도의
-결과를 얻을 수 있을 것으로 생각하고 있다.
+결과를 얻을 수 있을 것으로 생각하고 있다.\footnote{%
+	\pkg{xetex-ko}, \pkg{luatex-ko}에서는 별도의 패키지를
+	로드하지 않아도 \texttt{\textbackslash japanese} 명령을
+	쓸 수 있다. 특히 \pkg{luatex-ko}는 자체에 ruby 기능을 가지고 있다.}
 일본어 한자의 독음을 작은 가나 문자로 붙이는 것(루비)은 \pkg{CJK}의
 일부인 \pkg{ruby}\를 불러서 할 수 있다. 
 일본어 또는 중국어 문단을 식자하려면 \pkg{dhucs-trivcj}를
@@ -2021,11 +2079,19 @@ wadalab-unicode 글꼴과 arphic 글꼴(type 1)을 이용한다.
 
 \kotex-utf는 한글 \wi{세로쓰기}를 직접 지원하지 않는다.
 몇 가지 편법을 써서 세로쓰기 문단이나 문서를 만드는 실험이 행해진 적이 있지만
-이러한 결과를 얻기 위해서는 폰트를 직접 조작하는 \XeTeX-\ko를 살펴볼 것을 권장한다.
-참고로 \pkg{xetexko-vertical} 패키지는 한글 세로쓰기를 가능하게 한다. 그러나
-\kotex-utf에서 실행되는 것은 아니다.
+일반화할 만한 것은 아니었다.
+한편, \XeTeX-\ko는 한글의 세로쓰기가 구현되어 있다. \pkg{xetexko-vertical} 패키지를 이용하여 세로쓰기를 가능하게 한다.
 
 \chapter{글꼴 문제}\index{글꼴 문제}
+
+\XeTeX 이나 \LuaTeX 의 등장으로 가장 급격한 변화를 맞은 것이
+한글 글꼴(폰트)의 사용 방식에 대한 것이다. 트루타입과 오픈타입을
+직접 사용할 수 있는 이러한 텍 엔진의 등장은 매우 중요하고 극적인 변화를
+한글 텍 환경에 도입하게 하였다.
+이러한 새로운 텍 엔진에서 폰트를 사용하는 문제는 해당 문서를 참고하라.
+
+이 글은 레거시 텍에서 구현되는 \pkg{kotex-utf}에 관한 것이다.
+따라서 이 장 전체의 내용은 오직 \util{latex}이나 \util{pdflatex}으로 컴파일하는 경우에만 해당하며, \XeTeX, \LuaTeX에서 한글을 사용하는 경우와 호환성이 없다.
 
 \section{개관}
 
@@ -2259,6 +2325,9 @@ tlmgr install kotex-base
 기록한다.
 
 \chapter{한글 문서 서식을 위한 부가 패키지들}
+
+이 장에서 설명하는 부가 패키지들은 \pkg{kotex-utf}에서만 활용할 수 있으며
+\XeTeX, \LuaTeX을 사용하는 경우와는 호환성이 없다.
 
 \section{강조 방식}\label{sec:gremph}
 
@@ -2749,7 +2818,7 @@ $ komkindex(.pl) -s kotex foo
 
 \cmd{\index}\texttt{\{색인!인덱스\}}라고 마크하면
 이것은 ``색인''이라는 항목의 하위 항목으로 ``인덱스''라는
-항목이 취급되도록 하라는 의미이다. 한편, \cmd{\index}\texttt{\{금서목록@인덱스\}}라고 마크하면, 항목의 엔트리는 ``금서목록''으로 하되, 정렬 기준을 ``인덱스''에
+항목이 취급되도록 하라는 의미이다. 한편, \cmd{\index}\texttt{\{금서목록@인덱스\}}라고 마크하면, 항목의 엔트리는 ``인덱스''로 하되, 정렬 기준을 ``금서목록''에
 맞추라는 의미이다. 
 이밖에도 색인을 세밀하게 조절하기 위한 많은 방법이 있다.
 
@@ -2771,7 +2840,7 @@ $ komkindex(.pl) -s kotex foo
 
 \bigskip
 
-``찾아보기''라는 이름을 ``색인''으로 바꾸는 것은 \pageref{sec:names}페이지 \ref{sec:names}절에서 설명한 대로 \cmd{\ksnamedef}\texttt{\{indexname\}\{색인\}} 형식을 이용하면 된다.
+``찾아보기''라는 이름을 ``색인''으로 바꾸는 것은 \pageref{sec:names}페이지 \ref{sec:names}절에서 설명한 대로 \cmd{\renewcommand}\texttt{\{\textbackslash indexname\}\{색인\}} 형식을 이용하면 된다.
 
 \bigskip
 
@@ -2899,7 +2968,9 @@ $ htlatex foo.tex "dhucs,html4" " -cunihtf"
 
 \chapter{한글 트루타입 폰트의 사용}\label{cha:truetype}
 
-이미 언급한 대로 트루타입을 \kotex-utf에서 사용할 일은 거의 없을 것이나,
+\XeTeX, \LuaTeX 에서는 트루타입 폰트를 직접 사용할 수 있다.
+따라서 이제 
+\kotex-utf에서 사용할 일은 거의 없을 것이나,
 여기 예전에 제시한 방법의 메모를 남겨두기로 한다.
 
 \bigskip
@@ -3092,5 +3163,12 @@ LPPL version 3 또는 그 이후 버전의 라이선스로 배포된다.
 감사한다. 특히 문서의 감수를 맡아주신 이기황, 이주호 님께 특별히 감사의 말씀을 남겨놓는다.
 
 %\printbibliography
+
+\section*{바뀐 점}
+
+2014/05/12: \XeTeX, \LuaTeX\ 사용을 위한 힌트를 각주 형식으로 조금 추가하였다.
+
+\noindent 2014/02/28: \cmd{\ksnamedef} 명령을 사용하지 않게 되었음을 밝혔다.
+
 
 \end{document}
