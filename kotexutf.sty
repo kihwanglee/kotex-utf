@@ -34,23 +34,6 @@
 
 \input kotexutf-core
 
-\long\def\protected@write#1#2#3{%
-  \begingroup
-    \def\UTFviii@two@octets##1##2{%
-                            \string##1\string##2}%
-    \def\UTFviii@three@octets##1##2##3{%
-                            \string##1\string##2\string##3}%
-    \def\UTFviii@four@octets##1##2##3##4{%
-                            \string##1\string##2\string##3\string##4}%
-    \let\thepage\relax
-    #2%
-    \let\protect\@unexpandable@protect
-    \edef\reserved@a{\write#1{#3}}%
-    \reserved@a
-  \endgroup
-  \if@nobreak\ifvmode\nobreak\fi\fi
-}
-
 % modified from lucenc.def
 \DeclareFontEncoding{LUC}{}{}
 %\DeclareFontSubstitution{LUC}{utbt}{m}{n}
