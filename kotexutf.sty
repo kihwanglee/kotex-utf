@@ -12,7 +12,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{kotexutf}
-  [2013/10/20 v1.5  typesetting UTF-8 Korean documents]
+  [2015/07/18 v2.1.1 typesetting UTF-8 Korean documents]
 
 \newif\if@nonfrench
 \newif\if@hangul
@@ -496,10 +496,24 @@
   }{}%
 }
 
+% for pdfstring, we should unprotect protected characters
+\def\unihangul@unprotect@range#1#2#3{% #1: begin range
+  \count@ "#1\relax                  % #2: end range
+  \loop                              % #3: two/three/four
+    \begingroup
+      \lccode`\~\count@
+      \lowercase{\endgroup
+        \def~{\csname unihangul@#3@octets\endcsname~}}%
+    \ifnum\count@<"#2\relax \advance\count@\@ne
+  \repeat
+}
 %% use hyperref's unichar support
 \unless\ifdefined\pdfstringdefPreHook
   \let\pdfstringdefPreHook\@empty\fi
 \g@addto@macro\pdfstringdefPreHook{%
+  \unihangul@unprotect@range{C2}{DF}{two}%
+  \unihangul@unprotect@range{E0}{EF}{three}%
+  \unihangul@unprotect@range{F0}{F4}{four}%
   \let\unihangulchar\HyPsd@unichar
   \let\makejosa\@secondoftwo
   \let\dotemph\@firstofone
