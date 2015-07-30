@@ -1,3 +1,10 @@
+2015-07-18  Dohyun Kim  <nomos at ktug org>
+
+	Version 2.1.1
+
+	* kotexutf.sty: unprotect protected chars for hyperref solving the bug 
+	reported at http://www.ktug.org/xe/index.php?document_srl=210907
+
 2015-04-19  Dohyun Kim  <nomos at ktug org>
 
 	Version 2.1.0
