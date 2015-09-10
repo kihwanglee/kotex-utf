@@ -41,9 +41,9 @@
     \let\@tempa\@dhucs@enumerate@Eiii
   \fi\fi\fi
 }
-\def\@dhucs@enumerate@error#1#2#3{%
+\def\@dhucs@enumerate@error#1{%
   \PackageError{dhucs-enumerate}
-    {You can't use `\unexpanded{#1#2#3}' as enum label}
+    {You can't use `\unexpanded{#1}' as enum label}
     {Legal enum labels of hangul-ucs are: \MessageBreak\space\space
       \unexpanded{가, ㄱ, ㉠, ㉮, ㈀, ㈎, ①, ⑴, ⒜, ⓐ, ⅰ, Ⅰ}.}%
 }
