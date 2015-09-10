@@ -17,11 +17,11 @@
 \RequirePackage{paralist}
 
 \g@addto@macro\pl@hook{%
-  \ifx^^ea\pl@temp  % 가,
+  \ifx ^^ea\pl@temp  % 가,
     \let\@tempa\@dhucs@paralist@EA\else %%%%%
-  \ifx^^e2\pl@temp  % ①, ⑴, ⒜, ⓐ, ⅰ, Ⅰ
+  \ifx ^^e2\pl@temp  % ①, ⑴, ⒜, ⓐ, ⅰ, Ⅰ
     \let\@tempa\@dhucs@paralist@Eii\else %%%%%
-  \ifx^^e3\pl@temp  % ㄱ, ㉠, ㉮, ㈀, ㈎
+  \ifx ^^e3\pl@temp  % ㄱ, ㉠, ㉮, ㈀, ㈎
     \let\@tempa\@dhucs@paralist@Eiii
   \fi\fi\fi
 }
