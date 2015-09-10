@@ -16,6 +16,23 @@
 
 \RequirePackage{paralist}
 
+\ifx 가가\g@addto@macro\pl@hook{%
+    \ifx ^^^^ac00\pl@temp \def\@tempa{\pl@label\gana}\else
+    \ifx ^^^^2170\pl@temp \def\@tempa{\pl@label\hroman}\else
+    \ifx ^^^^2160\pl@temp \def\@tempa{\pl@label\hRoman}\else
+    \ifx ^^^^249c\pl@temp \def\@tempa{\pl@label\peng}\else
+    \ifx ^^^^24d0\pl@temp \def\@tempa{\pl@label\oeng}\else
+    \ifx ^^^^2474\pl@temp \def\@tempa{\pl@label\pnum}\else
+    \ifx ^^^^2460\pl@temp \def\@tempa{\pl@label\onum}\else
+    \ifx ^^^^320e\pl@temp \def\@tempa{\pl@label\pgana}\else
+    \ifx ^^^^326e\pl@temp \def\@tempa{\pl@label\ogana}\else
+    \ifx ^^^^3260\pl@temp \def\@tempa{\pl@label\ojaso}\else
+    \ifx ^^^^3131\pl@temp \def\@tempa{\pl@label\jaso}\else
+    \ifx ^^^^3200\pl@temp \def\@tempa{\pl@label\pjaso}%
+    \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+    \expandafter\endinput
+\fi
+
 \g@addto@macro\pl@hook{%
   \ifx ^^ea\pl@temp  % 가,
     \let\@tempa\@dhucs@paralist@EA\else %%%%%
