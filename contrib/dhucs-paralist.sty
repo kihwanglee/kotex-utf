@@ -1,7 +1,7 @@
 %% File `dhucs-paralist.sty`
 %%
 %% Copyright (c) 2007-2013 Dohyun Kim <nomos at krug org>
-%% modification from dhucs-enumerate.sty by Kangsoo Kim <karnes at ktug org>. 
+%% modification from dhucs-enumerate.sty by Kangsoo Kim <karnes at ktug org>.
 %%
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3c
@@ -12,38 +12,67 @@
 %% version 2006/05/20 or later.
 %%
 \ProvidesPackage{dhucs-paralist}
-  [2006/07/09 partially support paralist.sty under dhucs]
+  [2015/09/10 partially support paralist.sty under dhucs]
 
-\@ifpackageloaded{paralist}{}{\RequirePackage{paralist}}
+\RequirePackage{paralist}
+
+\ifx 가가\g@addto@macro\pl@hook{%
+    \ifx ^^^^ac00\pl@temp \def\@tempa{\pl@label\gana}\else
+    \ifx ^^^^2170\pl@temp \def\@tempa{\pl@label\hroman}\else
+    \ifx ^^^^2160\pl@temp \def\@tempa{\pl@label\hRoman}\else
+    \ifx ^^^^249c\pl@temp \def\@tempa{\pl@label\peng}\else
+    \ifx ^^^^24d0\pl@temp \def\@tempa{\pl@label\oeng}\else
+    \ifx ^^^^2474\pl@temp \def\@tempa{\pl@label\pnum}\else
+    \ifx ^^^^2460\pl@temp \def\@tempa{\pl@label\onum}\else
+    \ifx ^^^^320e\pl@temp \def\@tempa{\pl@label\pgana}\else
+    \ifx ^^^^326e\pl@temp \def\@tempa{\pl@label\ogana}\else
+    \ifx ^^^^3260\pl@temp \def\@tempa{\pl@label\ojaso}\else
+    \ifx ^^^^3131\pl@temp \def\@tempa{\pl@label\jaso}\else
+    \ifx ^^^^3200\pl@temp \def\@tempa{\pl@label\pjaso}%
+    \fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+    \expandafter\endinput
+\fi
 
 \g@addto@macro\pl@hook{%
-  \ifx^^ea\pl@temp  % 가,  
-    \let\@tempa\@dhucs@enumerate\else %%%%%
-  \ifx^^e2\pl@temp  % ①, ⑴, ⒜, ⓐ, ⅰ, Ⅰ
-    \let\@tempa\@dhucs@enumerate\else %%%%%
-  \ifx^^e3\pl@temp  % ㄱ, ㉠, ㉮, ㈀, ㈎
-    \let\@tempa\@dhucs@enumerate
-  \fi\fi\fi}
-\def\@dhucs@enumerate#1#2#3{%
-  \bgroup\let\unihangulchar\@firstofone
-    \xdef\@dhucs@enum@temp{#1#2#3}\egroup
-  \ifnum\@dhucs@enum@temp=44032 \def\@tempa{\pl@label\gana}\else
-  \ifnum\@dhucs@enum@temp=8560  \def\@tempa{\pl@label\hroman}\else
-  \ifnum\@dhucs@enum@temp=8544  \def\@tempa{\pl@label\hRoman}\else
-  \ifnum\@dhucs@enum@temp=9372  \def\@tempa{\pl@label\peng}\else
-  \ifnum\@dhucs@enum@temp=9424  \def\@tempa{\pl@label\oeng}\else
-  \ifnum\@dhucs@enum@temp=9332  \def\@tempa{\pl@label\pnum}\else
-  \ifnum\@dhucs@enum@temp=9312  \def\@tempa{\pl@label\onum}\else
-  \ifnum\@dhucs@enum@temp=12814 \def\@tempa{\pl@label\pgana}\else
-  \ifnum\@dhucs@enum@temp=12910 \def\@tempa{\pl@label\ogana}\else
-  \ifnum\@dhucs@enum@temp=12896 \def\@tempa{\pl@label\ojaso}\else
-  \ifnum\@dhucs@enum@temp=12593 \def\@tempa{\pl@label\jaso}\else
-  \ifnum\@dhucs@enum@temp=12800 \def\@tempa{\pl@label\pjaso}\else
-    \PackageError{dhucs-paralist}
-      {You can't use `\unexpanded{#1#2#3}' as enum label}
-      {Legal enum labels of hangul-ucs are: \MessageBreak\space\space
-        \unexpanded{가, ㄱ, ㉠, ㉮, ㈀, ㈎, ①, ⑴, ⒜, ⓐ, ⅰ, Ⅰ}.}
-  \fi\fi\fi\fi\fi \fi\fi\fi\fi\fi \fi\fi
-  \@tempa\relax}
-  
+  \ifx ^^ea\pl@temp  % 가,
+    \let\@tempa\@dhucs@paralist@EA\else %%%%%
+  \ifx ^^e2\pl@temp  % ①, ⑴, ⒜, ⓐ, ⅰ, Ⅰ
+    \let\@tempa\@dhucs@paralist@Eii\else %%%%%
+  \ifx ^^e3\pl@temp  % ㄱ, ㉠, ㉮, ㈀, ㈎
+    \let\@tempa\@dhucs@paralist@Eiii
+  \fi\fi\fi
+}
+\def\@dhucs@paralist@error#1{%
+  \PackageError{dhucs-paralist}
+  {You can't use `\unexpanded{#1}' as enum label}
+  {Legal enum labels of hangul-ucs are: \MessageBreak\space\space
+  \unexpanded{가, ㄱ, ㉠, ㉮, ㈀, ㈎, ①, ⑴, ⒜, ⓐ, ⅰ, Ⅰ}.}%
+}
+\def\@dhucs@paralist@EA#1#2#3{%
+  \ifnum\pdfstrcmp{#1#2#3}{^^ea^^b0^^80}=\z@ \def\@tempa{\pl@label\gana}\else
+    \@dhucs@paralist@error{#1#2#3}%
+  \fi
+  \@tempa\relax
+}
+\def\@dhucs@paralist@Eii#1#2#3{%
+  \ifnum\pdfstrcmp{#1#2#3}{^^e2^^85^^b0}=\z@ \def\@tempa{\pl@label\hroman}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e2^^85^^a0}=\z@ \def\@tempa{\pl@label\hRoman}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e2^^92^^9c}=\z@ \def\@tempa{\pl@label\peng}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e2^^93^^90}=\z@ \def\@tempa{\pl@label\oeng}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e2^^91^^b4}=\z@ \def\@tempa{\pl@label\pnum}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e2^^91^^a0}=\z@ \def\@tempa{\pl@label\onum}\else
+    \@dhucs@paralist@error{#1#2#3}%
+  \fi\fi\fi\fi\fi\fi
+  \@tempa\relax
+}
+\def\@dhucs@paralist@Eiii#1#2#3{%
+  \ifnum\pdfstrcmp{#1#2#3}{^^e3^^88^^8e}=\z@ \def\@tempa{\pl@label\pgana}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e3^^89^^ae}=\z@ \def\@tempa{\pl@label\ogana}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e3^^89^^a0}=\z@ \def\@tempa{\pl@label\ojaso}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e3^^84^^b1}=\z@ \def\@tempa{\pl@label\jaso}\else
+  \ifnum\pdfstrcmp{#1#2#3}{^^e3^^88^^80}=\z@ \def\@tempa{\pl@label\pjaso}\else
+    \@dhucs@paralist@error{#1#2#3}%
+  \fi\fi\fi\fi\fi
+  \@tempa\relax
+}
 \endinput
