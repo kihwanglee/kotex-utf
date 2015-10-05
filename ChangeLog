@@ -1,3 +1,10 @@
+2015-09-14  Dohyun Kim  <nomos at ktug org>
+
+	Version 2.1.2
+
+	* dhucs-enumerate.sty, dhucs-paralist.sty
+	fixed a bug regarding enumeration reported at KTUG BBS 213198.
+
 2015-07-18  Dohyun Kim  <nomos at ktug org>
 
 	Version 2.1.1
