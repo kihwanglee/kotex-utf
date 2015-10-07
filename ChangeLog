@@ -1,3 +1,9 @@
+2015-10-07  Kangsoo Kim  <karnes at ktug org>
+
+	Version 2.1.2a
+
+	* kotexutf-core.sty: respond to MikTeX packaging bug omitting hfontspec.default.
+
 2015-09-14  Dohyun Kim  <nomos at ktug org>
 
 	Version 2.1.2
