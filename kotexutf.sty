@@ -34,6 +34,30 @@
 
 \input kotexutf-core
 
+% redefine MakeUppercase as we suppressed uccode/lccode in kotexutf-core
+\DeclareRobustCommand{\MakeUppercase}[1]{{%
+  % begin patch
+  \count@"A0 \loop
+    \ifnum\count@="B7 \else
+      \begingroup
+      \@tempcnta\count@ \advance\@tempcnta-"20
+      \lccode`\~\count@ \lccode`\!\@tempcnta
+      \lowercase{\endgroup
+        \expandafter\def\csname u8:\string^^c3\string~\endcsname{^^c3!}}%
+    \fi
+  \ifnum\count@<"BE \advance\count@\@ne \repeat
+  % end patch
+      \def\i{I}\def\j{J}%
+      \def\reserved@a##1##2{\let##1##2\reserved@a}%
+      \expandafter\reserved@a\@uclclist\reserved@b{\reserved@b\@gobble}%
+      \let\UTF@two@octets@noexpand\@empty
+      \let\UTF@three@octets@noexpand\@empty
+      \let\UTF@four@octets@noexpand\@empty
+      \protected@edef\reserved@a{\uppercase{#1}}%
+      \reserved@a
+   }}
+\protected@edef\MakeUppercase#1{\MakeUppercase{#1}}
+
 % modified from lucenc.def
 \DeclareFontEncoding{LUC}{}{}
 %\DeclareFontSubstitution{LUC}{utbt}{m}{n}
