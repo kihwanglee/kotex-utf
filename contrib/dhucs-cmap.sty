@@ -11,10 +11,10 @@
 %% version 2006/05/20 or later.
 %%
 \ProvidesPackage{dhucs-cmap}
-  [2007/06/16 searchable PDF for dhucs upon pdftex]
+  [2021/03/01 searchable PDF for dhucs upon pdftex]
 
-\RequirePackage{ifpdf}
-\ifpdf\else\expandafter\endinput\fi
+\RequirePackage{iftex}
+\ifpdf\else\endinput\fi
 
 \newcommand*\AddUniSubCmap{%
   \ifdefined \now@jamo@printing
@@ -72,6 +72,7 @@
   \fi
   \pdffontattr\font@name{/ToUnicode
     \csname dhucs-cmap-\h@ngulpl@ne\endcsname\space 0 R}%
+  \ifdefined\pdfnobuiltintounicode \pdfnobuiltintounicode\font@name \fi
 }
 
 \newcommand*\jamo@dh@cmap[1]{%
@@ -81,6 +82,7 @@
   \fi
   \pdffontattr\font@name{/ToUnicode
     \csname dhucs-cmap-mid-#1\endcsname\space 0 R}%
+  \ifdefined\pdfnobuiltintounicode \pdfnobuiltintounicode\font@name \fi
 }
 
 \def\dhucs@define@newfont{\define@newfont\AddUniSubCmap\h@ngulpl@ne}
