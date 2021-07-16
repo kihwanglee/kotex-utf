@@ -58,6 +58,13 @@
    }}
 \protected@edef\MakeUppercase#1{\MakeUppercase{#1}}
 
+% care about fancyvrb's VerbatimOut env
+\def\kotex@make@utfviii@other{%
+  \count@"80 \loop \catcode\count@=12 \ifnum\count@<"BF \advance\count@\@ne \repeat
+  \count@"C2 \loop \catcode\count@=12 \ifnum\count@<"F4 \advance\count@\@ne \repeat
+}
+\AddToHook{env/VerbatimOut/begin}{\kotex@make@utfviii@other}
+
 % modified from lucenc.def
 \DeclareFontEncoding{LUC}{}{}
 %\DeclareFontSubstitution{LUC}{utbt}{m}{n}
@@ -535,9 +542,9 @@
 \unless\ifdefined\pdfstringdefPreHook
   \let\pdfstringdefPreHook\@empty\fi
 \g@addto@macro\pdfstringdefPreHook{%
-  \unihangul@unprotect@range{C2}{DF}{two}%
-  \unihangul@unprotect@range{E0}{EF}{three}%
-  \unihangul@unprotect@range{F0}{F4}{four}%
+%  \unihangul@unprotect@range{C2}{DF}{two}%
+%  \unihangul@unprotect@range{E0}{EF}{three}%
+%  \unihangul@unprotect@range{F0}{F4}{four}%
   \let\unihangulchar\HyPsd@unichar
   \let\makejosa\@secondoftwo
   \let\dotemph\@firstofone
