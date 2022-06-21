@@ -1,8 +1,8 @@
-2021-XX-XX  Dohyun Kim  <nomos at ktug org>
+2022-XX-XX  Dohyun Kim  <nomos at ktug org>
 
 	Version X.X.X
 
-	* kotexutf.sty: redefine \MakeUppercase;
+	* kotexutf.sty:
 	protect non-ascii characters in VerbatimOut environment;
 	revert hyperref bookmark patch of v2.1.1.
 
