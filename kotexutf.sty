@@ -111,14 +111,10 @@
   \def\dhucs@temp@hanjafont {#2}%
 }
 
-\protected\edef\normalfont{%
-  \unexpanded{%
-    \let\dhucs@temp@hangulfont\dhucs@undefined
-    \let\dhucs@temp@hanjafont \dhucs@undefined
-  }%
-  \unexpanded\expandafter{\normalfont}%
+\AddToHook{normalfont}{%
+  \let\dhucs@temp@hangulfont\dhucs@undefined
+  \let\dhucs@temp@hanjafont \dhucs@undefined
 }
-\let\reset@font\normalfont
 
 %% now print out \unihangulchar
 \newcommand*\unihangulchar@@@{%
