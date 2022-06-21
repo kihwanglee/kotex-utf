@@ -1,3 +1,13 @@
+2022-XX-XX  Dohyun Kim  <nomos at ktug org>
+
+	Version X.X.X
+
+	* kotexutf.sty:
+	protect non-ascii characters in VerbatimOut environment;
+	revert hyperref bookmark patch of v2.1.1.
+
+	* dhucs-cmap.sty: prevent redundant ToUnicode entry.
+
 2015-09-14  Dohyun Kim  <nomos at ktug org>
 
 	Version 2.1.2
@@ -9,7 +19,7 @@
 
 	Version 2.1.1
 
-	* kotexutf.sty: unprotect protected chars for hyperref solving the bug 
+	* kotexutf.sty: unprotect protected chars for hyperref solving the bug
 	reported at http://www.ktug.org/xe/index.php?document_srl=210907
 
 2015-04-19  Dohyun Kim  <nomos at ktug org>
@@ -34,13 +44,13 @@
 2013-11-07  Kangsoo Kim  <karnes at ktug org>
 
 	No version change
-	
+
 	* kotexdoc.tex: revised for new Xindy related matters
 
 2013-10-24  Kihwang Lee  <leekh at ktug org>
 
 	No version change
-	
+
 	* Uploaded to CTAN
 
 2013-10-22  Kangsoo Kim  <karnes at ktug org>
@@ -50,7 +60,7 @@
 2013-10-21  Kihwang Lee  <leekh at ktug org>
 
 	Version 2.0.0
-	
+
 	* kotex-utf packaging, uploaded to https://github.com/kihwanglee/kotex-utf
 
 2013-10-21  Kangsoo Kim  <karnes at ktug org>
